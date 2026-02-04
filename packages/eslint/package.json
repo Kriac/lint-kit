@@ -1,0 +1,48 @@
+{
+  "name": "@kriac/eslint-config",
+  "type": "module",
+  "version": "0.5.0",
+  "description": "@kriac/eslint-config",
+  "author": "Kriac",
+  "homepage": "https://github.com/Kriac/lint-kit",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kriac/lint-kit.git"
+  },
+  "keywords": [
+    "eslint",
+    "eslint config"
+  ],
+  "scripts": {
+    "lint": "vue-tsc -b --noEmit",
+    "build": "tsup",
+    "release": "npm publish --access public"
+  },
+  "peerDependencies": {
+    "eslint": ">=9.0.0"
+  },
+  "dependencies": {
+    "@eslint/js": "9.39.2",
+    "eslint-config-prettier": "10.1.8",
+    "eslint-plugin-perfectionist": "5.4.0",
+    "eslint-plugin-vue": "10.7.0",
+    "typescript-eslint": "8.54.0",
+    "vue-eslint-parser": "10.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "25.0.10",
+    "eslint": "9.39.2",
+    "tsup": "8.5.1",
+    "vue-tsc": "3.2.1"
+  },
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  }
+}

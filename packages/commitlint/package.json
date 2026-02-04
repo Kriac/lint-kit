@@ -1,0 +1,40 @@
+{
+  "name": "@kriac/commitlint-config",
+  "type": "module",
+  "version": "0.5.0",
+  "description": "@kriac/commitlint-config",
+  "author": "Kriac",
+  "homepage": "https://github.com/Kriac/lint-kit",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kriac/lint-kit.git"
+  },
+  "keywords": [
+    "commitlint",
+    "commitlint config"
+  ],
+  "scripts": {
+    "lint": "vue-tsc -b --noEmit",
+    "build": "tsup",
+    "release": "npm publish --access public"
+  },
+  "peerDependencies": {
+    "czg": ">=1.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "25.0.10",
+    "czg": "1.12.0",
+    "tsup": "8.5.1",
+    "vue-tsc": "3.2.1"
+  },
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  }
+}

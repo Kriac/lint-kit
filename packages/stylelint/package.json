@@ -1,0 +1,48 @@
+{
+  "name": "@kriac/stylelint-config",
+  "type": "module",
+  "version": "0.5.0",
+  "description": "@kriac/stylelint-config",
+  "author": "Kriac",
+  "homepage": "https://github.com/Kriac/lint-kit",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kriac/lint-kit.git"
+  },
+  "keywords": [
+    "stylelint",
+    "stylelint config"
+  ],
+  "scripts": {
+    "lint": "vue-tsc -b --noEmit",
+    "build": "tsup",
+    "release": "npm publish --access public"
+  },
+  "peerDependencies": {
+    "stylelint": ">=17.0.0"
+  },
+  "dependencies": {
+    "postcss-html": "1.8.1",
+    "stylelint-config-recess-order": "7.6.0",
+    "stylelint-config-recommended-vue": "1.6.1",
+    "stylelint-config-standard": "40.0.0",
+    "stylelint-config-standard-scss": "17.0.0",
+    "stylelint-order": "7.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "25.0.10",
+    "stylelint": "17.0.0",
+    "tsup": "8.5.1",
+    "vue-tsc": "3.2.1"
+  },
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  }
+}

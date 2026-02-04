@@ -1,0 +1,55 @@
+{
+  "name": "@kriac/lint-kit",
+  "private": true,
+  "packageManager": "pnpm@10.25.0",
+  "scripts": {
+    "prepare": "husky",
+    "commit": "czg",
+    "format": "prettier --write .",
+    "lint": "pnpm -r lint",
+    "lint:es": "eslint --fix",
+    "lint:style": "stylelint **/*.{vue,css,scss} --fix",
+    "build": "pnpm -r build",
+    "build:es": "pnpm -F @kriac/eslint-config build",
+    "build:style": "pnpm -F @kriac/stylelint-config build",
+    "build:commit": "pnpm -F @kriac/commitlint-config build",
+    "release:es": "pnpm build:es && pnpm -F @kriac/eslint-config release",
+    "release:style": "pnpm build:style && pnpm -F @kriac/stylelint-config release",
+    "release:commit": "pnpm build:commit && pnpm -F @kriac/commitlint-config release"
+  },
+  "devDependencies": {
+    "@kriac/commitlint-config": "workspace:*",
+    "@kriac/eslint-config": "workspace:*",
+    "@kriac/stylelint-config": "workspace:*",
+    "commitlint": "20.3.0",
+    "czg": "1.12.0",
+    "eslint": "9.39.2",
+    "husky": "9.1.7",
+    "lint-staged": "16.2.7",
+    "prettier": "3.7.2",
+    "stylelint": "17.0.0"
+  },
+  "config": {
+    "commitizen": {
+      "czConfig": "commitlint.config.mjs"
+    }
+  },
+  "lint-staged": {
+    "*.vue": [
+      "eslint --fix",
+      "stylelint --fix",
+      "prettier --write"
+    ],
+    "*.{js,ts,jsx,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{css,scss}": [
+      "stylelint --fix",
+      "prettier --write"
+    ],
+    "*.{json,yaml,md}": [
+      "prettier --write"
+    ]
+  }
+}
