@@ -21,6 +21,9 @@ export default function (opts?: PluginOptions) {
         parser: vueParser,
         parserOptions: {
           parser: tsEslint.parser,
+          ecmaFeatures: {
+            jsx: true,
+          },
         },
       },
     },
