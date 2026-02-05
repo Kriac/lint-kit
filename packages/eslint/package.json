@@ -1,7 +1,7 @@
 {
   "name": "@kriac/eslint-config",
   "type": "module",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "@kriac/eslint-config",
   "author": "Kriac",
   "homepage": "https://github.com/Kriac/lint-kit",
