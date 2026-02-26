@@ -8,9 +8,7 @@
 
 ### 安装
 
-- @kriac/commitlint-config: commitlint 统一配置
-- @kriac/eslint-config: eslint 统一配置
-- @kriac/stylelint-config: stylelint 统一配置
+- @kriac/lint-kit: 统一 lint 配置
 - commitlint: git 提交内容检查
 - eslint: 代码检查
 - stylelint: css 样式检查
@@ -24,16 +22,16 @@ pnpm i -D commitlint eslint stylelint
 安装统一的配置文件插件：
 
 ```bash
-pnpm i -D @kriac/commitlint-config @kriac/eslint-config @kriac/stylelint-config
+pnpm i -D @kriac/lint-kit
 ```
 
-### 推荐安装
+### 推荐
 
-- vue-tsc: vue + ts 类型错误检查
-- prettier: 代码格式化
-- husky: git 钩子工具
-- czg: git 提交工具
-- lint-staged: 暂存区代码检查
+建议安装下面这几个包，可用于大幅提升开发体验。
+
+```bash
+pnpm i -D husky czg lint-staged vue-tsc prettier
+```
 
 ### 配置
 
