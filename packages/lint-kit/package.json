@@ -1,0 +1,59 @@
+{
+  "name": "@kriac/lint-kit",
+  "description": "@kriac/lint-kit",
+  "author": "Kriac",
+  "license": "MIT",
+  "type": "module",
+  "version": "0.0.1",
+  "homepage": "https://github.com/Kriac/lint-kit",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kriac/lint-kit.git"
+  },
+  "keywords": [
+    "lint-kit",
+    "lint-config"
+  ],
+  "scripts": {
+    "lint": "vue-tsc -b --noEmit",
+    "build": "tsdown",
+    "release": "npm publish --access public"
+  },
+  "peerDependencies": {
+    "czg": ">=1.0.0",
+    "eslint": ">=9.0.0",
+    "stylelint": ">=17.0.0"
+  },
+  "dependencies": {
+    "@kriac/commitlint-config": "0.5.1",
+    "@kriac/eslint-config": "0.5.2",
+    "@kriac/stylelint-config": "0.5.1",
+    "stylelint-config-recess-order": "7.6.0",
+    "stylelint-config-recommended-vue": "1.6.1",
+    "stylelint-config-standard": "40.0.0",
+    "stylelint-config-standard-scss": "17.0.0",
+    "stylelint-order": "7.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "25.0.10",
+    "tsdown": "0.20.3",
+    "vue-tsc": "3.2.1"
+  },
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    "./commitlint": {
+      "types": "./dist/commitlint.d.mts",
+      "import": "./dist/commitlint.mjs"
+    },
+    "./eslint": {
+      "types": "./dist/eslint.d.mts",
+      "import": "./dist/eslint.mjs"
+    },
+    "./stylelint": {
+      "types": "./dist/stylelint.d.mts",
+      "import": "./dist/stylelint.mjs"
+    }
+  }
+}

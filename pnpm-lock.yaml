@@ -35,8 +35,8 @@ importers:
         specifier: 3.7.2
         version: 3.7.2
       stylelint:
-        specifier: 17.4.0
-        version: 17.4.0(typescript@5.9.3)
+        specifier: 17.0.0
+        version: 17.0.0(typescript@5.9.3)
 
   packages/commitlint:
     devDependencies:
@@ -90,14 +90,14 @@ importers:
   packages/lint-kit:
     dependencies:
       "@kriac/commitlint-config":
-        specifier: 0.5.0
-        version: 0.5.0(czg@1.12.0)
-      "@kriac/eslint-config":
         specifier: 0.5.1
-        version: 0.5.1(@typescript-eslint/parser@8.54.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
+        version: 0.5.1(czg@1.12.0)
+      "@kriac/eslint-config":
+        specifier: 0.5.2
+        version: 0.5.2(@typescript-eslint/parser@8.54.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)
       "@kriac/stylelint-config":
-        specifier: 0.5.0
-        version: 0.5.0(postcss@8.5.6)(stylelint@17.4.0(typescript@5.9.3))
+        specifier: 0.5.1
+        version: 0.5.1(postcss@8.5.6)(stylelint@17.4.0(typescript@5.9.3))
       czg:
         specifier: ">=1.0.0"
         version: 1.12.0
@@ -576,26 +576,26 @@ packages:
         integrity: sha512-dXn3FZhPv0US+7dtJsIi2R+c7qWYiReoEh5zUntWCf4oSpMNib8FDhSoed6m3QyZdx5hK7iLFkYk3rNxwt8vTA==,
       }
 
-  "@kriac/commitlint-config@0.5.0":
+  "@kriac/commitlint-config@0.5.1":
     resolution:
       {
-        integrity: sha512-j0Xk6RHGEW0tE/QG7L/zer9bFna+lgzM5nlEwmcQRExUBf2kBsZi0+/0VldnROgwSjqj9sIt/4vJdg3BwCA54g==,
+        integrity: sha512-HKspo7wcHy5le4DGkDCp/vBAbWN+IBG9qgKkIBlR4IqQZjkPUd2+54MnXGaSGIS7WEiyugk6dT9VWwyqiN1aHg==,
       }
     peerDependencies:
       czg: ">=1.0.0"
 
-  "@kriac/eslint-config@0.5.1":
+  "@kriac/eslint-config@0.5.2":
     resolution:
       {
-        integrity: sha512-C5RG9gH5nQhuchzpf6f/TEnDopnFp3MQNEnTCVKcnES308xKNLZKUjw/w8Gr0HqwsAfGawG8lrSmTEXSp9ecYA==,
+        integrity: sha512-WLbru2sWcUSak9mzUxX63zCB8u3c+/SVPa76qomHYCAIVfe2HDTZySWm0oMTu5uEsvvCZ+r6S306Q2pIJ/gXVg==,
       }
     peerDependencies:
       eslint: ">=9.0.0"
 
-  "@kriac/stylelint-config@0.5.0":
+  "@kriac/stylelint-config@0.5.1":
     resolution:
       {
-        integrity: sha512-/stdWnVTXDhAWNMtULJNbM2yMpnoBfsVDxESgmQcORjh1xFUqq1OkAw1ZVrT9R9MphjZSDeE5YlGpkFTacVd2A==,
+        integrity: sha512-eUm6wNwUCVox24L4x2GV7l5InbFWehcxN9BKaDnjc7GZfgW3g0VJShEF/OIk9SSh/gmPq4XAIwL0jOfzeQy8ew==,
       }
     peerDependencies:
       stylelint: ">=17.0.0"
@@ -3499,11 +3499,11 @@ snapshots:
 
   "@keyv/serialize@1.1.1": {}
 
-  "@kriac/commitlint-config@0.5.0(czg@1.12.0)":
+  "@kriac/commitlint-config@0.5.1(czg@1.12.0)":
     dependencies:
       czg: 1.12.0
 
-  "@kriac/eslint-config@0.5.1(@typescript-eslint/parser@8.54.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)":
+  "@kriac/eslint-config@0.5.2(@typescript-eslint/parser@8.54.0(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3))(eslint@9.39.2(jiti@2.6.1))(typescript@5.9.3)":
     dependencies:
       "@eslint/js": 9.39.2
       eslint: 9.39.2(jiti@2.6.1)
@@ -3518,7 +3518,7 @@ snapshots:
       - supports-color
       - typescript
 
-  "@kriac/stylelint-config@0.5.0(postcss@8.5.6)(stylelint@17.4.0(typescript@5.9.3))":
+  "@kriac/stylelint-config@0.5.1(postcss@8.5.6)(stylelint@17.4.0(typescript@5.9.3))":
     dependencies:
       postcss-html: 1.8.1
       stylelint: 17.4.0(typescript@5.9.3)
