@@ -51,6 +51,8 @@ export default function (opts?: PluginOptions) {
         "no-undef": "off",
         // 空对象类型校验 - 禁用原因: 扩展接口时可能需要使用空对象类型
         "@typescript-eslint/no-empty-object-type": "off",
+        // vue 模板根节点校验 - 禁用原因: 部分工具需要vue单文件但是可能没有子节点
+        "vue/valid-template-root": "off",
         // vue 组件名多单词校验 - 禁用原因: 组件作为页面的情况可能是单单词
         "vue/multi-word-component-names": "off",
       },
