@@ -10,7 +10,7 @@
 import config from "@kriac/eslint-config";
 
 export default config({
-  ignores: [],
+  // 参考类型 PluginOptions
 });
 ```
 

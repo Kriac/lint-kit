@@ -1,6 +1,6 @@
 {
-  "name": "@kriac/lint-kit",
   "private": true,
+  "version": "0.0.1",
   "packageManager": "pnpm@10.25.0",
   "scripts": {
     "prepare": "husky",
@@ -10,9 +10,11 @@
     "lint:es": "eslint --fix",
     "lint:style": "stylelint **/*.{vue,css,scss} --fix",
     "build": "pnpm -r build",
+    "build:kit": "pnpm -F @kriac/lint-kit build",
     "build:es": "pnpm -F @kriac/eslint-config build",
     "build:style": "pnpm -F @kriac/stylelint-config build",
     "build:commit": "pnpm -F @kriac/commitlint-config build",
+    "release:kit": "pnpm build:kit && pnpm -F @kriac/lint-kit release",
     "release:es": "pnpm build:es && pnpm -F @kriac/eslint-config release",
     "release:style": "pnpm build:style && pnpm -F @kriac/stylelint-config release",
     "release:commit": "pnpm build:commit && pnpm -F @kriac/commitlint-config release"
