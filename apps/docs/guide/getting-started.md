@@ -1,13 +1,13 @@
 # 快速开始
 
-Lint Kit 一个基于社区实践的个人 lint 配置集合，旨在为 vue3 + ts 项目提供统一的配置。
+Lint Kit 是一个基于社区实践的个人 lint 配置集合，旨在为 vue3 + ts 项目提供统一的配置。
 
 ### 安装
 
 让我们开始吧，首先您需要在根目录下安装运行依赖：
 
 ```bash
-pnpm i -D czg commitlint eslint stylelint
+pnpm i -D eslint stylelint commitlint czg
 ```
 
 接下来安装统一的配置依赖：
@@ -17,16 +17,6 @@ pnpm i -D @kriac/lint-kit
 ```
 
 ### 配置
-
-### commitlint.config.mjs
-
-```js
-import config from "@kriac/commitlint-config";
-
-export default config({
-  // 参考类型 PluginOptions
-});
-```
 
 ### eslint.config.mjs
 
@@ -44,6 +34,16 @@ export default config({
 export default {
   extends: ["@kriac/stylelint-config"],
 };
+```
+
+### commitlint.config.mjs
+
+```js
+import config from "@kriac/commitlint-config";
+
+export default config({
+  // 参考类型 PluginOptions
+});
 ```
 
 ### package.json

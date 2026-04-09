@@ -11,7 +11,7 @@
 让我们开始吧，首先您需要在根目录下安装运行依赖：
 
 ```bash
-pnpm i -D czg commitlint eslint stylelint
+pnpm i -D eslint stylelint commitlint czg
 ```
 
 接下来安装统一的配置依赖：
@@ -21,16 +21,6 @@ pnpm i -D @kriac/lint-kit
 ```
 
 ### 配置
-
-### commitlint.config.mjs
-
-```js
-import config from "@kriac/commitlint-config";
-
-export default config({
-  // 参考类型 PluginOptions
-});
-```
 
 ### eslint.config.mjs
 
@@ -48,6 +38,16 @@ export default config({
 export default {
   extends: ["@kriac/stylelint-config"],
 };
+```
+
+### commitlint.config.mjs
+
+```js
+import config from "@kriac/commitlint-config";
+
+export default config({
+  // 参考类型 PluginOptions
+});
 ```
 
 ### package.json

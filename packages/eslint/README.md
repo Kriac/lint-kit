@@ -1,12 +1,12 @@
-# @kriac/eslint-config
+# ESLint 配置
 
-用于 eslint 的统一配置插件
+`@kriac/eslint-config` 提供了预配置的 ESLint 规则集，支持 Vue 和 TypeScript。
 
 ## 使用
 
 ### eslint.config.mjs
 
-```mjs
+```js
 import config from "@kriac/eslint-config";
 
 export default config({
@@ -14,10 +14,17 @@ export default config({
 });
 ```
 
-### 选项
+## 选项
 
-- ignores: 用于扩展忽略文件的数组，默认包含 node_modules 和 dist。
+### `ignores`
 
-## 报告错误
+- 类型：`string[]`
+- 默认值：`["node_modules", "dist"]`
 
-欢迎提交 issue 与我们讨论。
+用于扩展忽略文件的数组，默认已包含 `node_modules` 和 `dist`。
+
+### `configs`
+
+- 类型：`Config[]`
+
+自定义 ESLint 扁平化配置，会追加到内置配置之后。
