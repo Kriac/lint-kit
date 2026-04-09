@@ -1,8 +1,14 @@
 import { defineConfig } from "vitepress";
 
+const isGithubActions = process.env.GITHUB_ACTIONS === "true";
+const repo = process.env.GITHUB_REPOSITORY?.split("/")[1];
+const base = isGithubActions && repo ? `/${repo}/` : "/";
+
 export default defineConfig({
+  base,
   title: "Lint Kit",
-  description: "一个基于社区实践的 lint 配置集合，为前端项目提供统一的配置。",
+  description:
+    "一个基于社区实践的个人 lint 配置集合，旨在为 vue3 + ts 项目提供统一的配置。",
   lang: "zh-CN",
   themeConfig: {
     search: {
