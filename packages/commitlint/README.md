@@ -1,12 +1,12 @@
-# @kriac/commitlint-config
+# Commitlint 配置
 
-用于 commitlint 的统一配置插件
+`@kriac/commitlint-config` 提供了规范化的 Git 提交信息配置，内置 czg 交互式提交支持。
 
 ## 使用
 
 ### commitlint.config.mjs
 
-```mjs
+```js
 import config from "@kriac/commitlint-config";
 
 export default config({
@@ -14,10 +14,15 @@ export default config({
 });
 ```
 
-### 选项
+## 选项
 
-- scopes: 用于配置提交范围，默认值为空数组
+### `scopes`
 
-## 报告错误
+- 类型：`{ name: string; value: string }[]`
+- 默认值：`[]`
 
-欢迎提交 issue 与我们讨论。
+用于配置提交范围列表，在 czg 交互式提交时会作为可选项展示。
+
+### `rules`
+
+可额外扩展的自定义 commitlint 规则。

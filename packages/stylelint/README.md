@@ -1,17 +1,13 @@
-# @kriac/stylelint-config
+# Stylelint 配置
 
-用于 stylelint 的统一配置插件
+`@kriac/stylelint-config` 提供了统一的 CSS / SCSS 样式规范，支持 Vue 单文件组件。
 
 ## 使用
 
 ### stylelint.config.mjs
 
-```mjs
+```js
 export default {
   extends: ["@kriac/stylelint-config"],
 };
 ```
-
-## 报告错误
-
-欢迎提交 issue 与我们讨论。
