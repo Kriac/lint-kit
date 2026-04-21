@@ -59,7 +59,7 @@ jobs:
           path: apps/docs/.vitepress/dist
 
   deploy:
-    if: env.IS_MAIN_PUSH == 'true'
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
