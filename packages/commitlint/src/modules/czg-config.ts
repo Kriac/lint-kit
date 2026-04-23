@@ -19,16 +19,28 @@ export const types: Optional[] = [
     value: "refactor",
   },
   {
+    name: "perf: 性能优化",
+    value: "perf",
+  },
+  {
     name: "test: 测试代码",
     value: "test",
   },
   {
-    name: "documentation: 文档",
+    name: "ci: 持续集成",
+    value: "ci",
+  },
+  {
+    name: "docs: 文档",
     value: "docs",
   },
   {
     name: "chore: 杂项/工程依赖",
     value: "chore",
+  },
+  {
+    name: "revert: 回退",
+    value: "revert",
   },
 ];
 
