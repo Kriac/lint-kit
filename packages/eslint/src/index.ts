@@ -41,9 +41,6 @@ export default function (opts?: PluginOptions) {
     // 导入顺序最佳实践
     ImportSortConfig,
 
-    // 自定义配置
-    ...configs,
-
     // 自定义规则
     {
       rules: {
@@ -57,6 +54,9 @@ export default function (opts?: PluginOptions) {
         "vue/multi-word-component-names": "off",
       },
     },
+
+    // 自定义配置
+    ...configs,
 
     // 格式化风格
     prettierConfig,
