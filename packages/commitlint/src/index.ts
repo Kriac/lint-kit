@@ -17,13 +17,13 @@ export default function (opts?: PluginOptions) {
 
     // 扩展规则
     rules: {
-      // 自定义规则
-      ...rules,
-
       // 必须要定义类型
       "type-empty": [2, "never"],
       // 类型必须在枚举范围内
       "type-enum": [2, "always", typeValues],
+
+      // 自定义规则
+      ...rules,
     },
   });
 }
