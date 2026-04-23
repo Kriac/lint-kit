@@ -11,7 +11,7 @@ export default {
   ],
   overrides: [
     {
-      files: ["**/*.vue"],
+      files: ["**/*.html", "**/*.vue"],
       customSyntax: require.resolve("postcss-html"),
     },
   ],
