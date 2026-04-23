@@ -4,7 +4,7 @@
   "author": "Kriac",
   "license": "MIT",
   "type": "module",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "homepage": "https://github.com/Kriac/lint-kit",
   "repository": {
     "type": "git",
@@ -25,9 +25,9 @@
     "stylelint": ">=17.0.0"
   },
   "dependencies": {
-    "@kriac/commitlint-config": "0.5.1",
+    "@kriac/commitlint-config": "0.5.2",
     "@kriac/eslint-config": "0.5.2",
-    "@kriac/stylelint-config": "0.5.1",
+    "@kriac/stylelint-config": "0.5.2",
     "stylelint-config-recess-order": "7.6.0",
     "stylelint-config-recommended-vue": "1.6.1",
     "stylelint-config-standard": "40.0.0",
