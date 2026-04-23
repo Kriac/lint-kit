@@ -115,14 +115,14 @@ importers:
   packages/lint-kit:
     dependencies:
       "@kriac/commitlint-config":
-        specifier: 0.5.1
-        version: 0.5.1(czg@1.12.0)
+        specifier: 0.5.2
+        version: 0.5.2(czg@1.12.0)
       "@kriac/eslint-config":
         specifier: 0.5.2
         version: 0.5.2(@typescript-eslint/parser@8.54.0(eslint@9.39.2(jiti@2.6.1))(typescript@6.0.2))(eslint@9.39.2(jiti@2.6.1))(typescript@6.0.2)
       "@kriac/stylelint-config":
-        specifier: 0.5.1
-        version: 0.5.1(postcss@8.5.9)(stylelint@17.0.0(typescript@6.0.2))
+        specifier: 0.5.2
+        version: 0.5.2(postcss@8.5.9)(stylelint@17.0.0(typescript@6.0.2))
       czg:
         specifier: ">=1.0.0"
         version: 1.12.0
@@ -1005,10 +1005,10 @@ packages:
         integrity: sha512-dXn3FZhPv0US+7dtJsIi2R+c7qWYiReoEh5zUntWCf4oSpMNib8FDhSoed6m3QyZdx5hK7iLFkYk3rNxwt8vTA==,
       }
 
-  "@kriac/commitlint-config@0.5.1":
+  "@kriac/commitlint-config@0.5.2":
     resolution:
       {
-        integrity: sha512-HKspo7wcHy5le4DGkDCp/vBAbWN+IBG9qgKkIBlR4IqQZjkPUd2+54MnXGaSGIS7WEiyugk6dT9VWwyqiN1aHg==,
+        integrity: sha512-xDXw43Gjbj7whm9Vsnx+dg22YmEX20auY1fy1Dewh4PYkZfM94OErTflz1CgKsD/cKPc4+NWiSeE//nNFvbXrw==,
       }
     peerDependencies:
       czg: ">=1.0.0"
@@ -1021,10 +1021,10 @@ packages:
     peerDependencies:
       eslint: ">=9.0.0"
 
-  "@kriac/stylelint-config@0.5.1":
+  "@kriac/stylelint-config@0.5.2":
     resolution:
       {
-        integrity: sha512-eUm6wNwUCVox24L4x2GV7l5InbFWehcxN9BKaDnjc7GZfgW3g0VJShEF/OIk9SSh/gmPq4XAIwL0jOfzeQy8ew==,
+        integrity: sha512-F7m9nTzuN/fgosKmaV2OmBrUceogWpSHA98rJo9zJHQJSqfFOkOexzqqkaHdPmNKak8UhTxGTd/Wc4N7PkT16w==,
       }
     peerDependencies:
       stylelint: ">=17.0.0"
@@ -5277,7 +5277,7 @@ snapshots:
 
   "@keyv/serialize@1.1.1": {}
 
-  "@kriac/commitlint-config@0.5.1(czg@1.12.0)":
+  "@kriac/commitlint-config@0.5.2(czg@1.12.0)":
     dependencies:
       czg: 1.12.0
 
@@ -5296,7 +5296,7 @@ snapshots:
       - supports-color
       - typescript
 
-  "@kriac/stylelint-config@0.5.1(postcss@8.5.9)(stylelint@17.0.0(typescript@6.0.2))":
+  "@kriac/stylelint-config@0.5.2(postcss@8.5.9)(stylelint@17.0.0(typescript@6.0.2))":
     dependencies:
       postcss-html: 1.8.1
       stylelint: 17.0.0(typescript@6.0.2)
