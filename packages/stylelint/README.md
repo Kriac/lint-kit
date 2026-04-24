@@ -1,8 +1,6 @@
-# Stylelint 配置
+# Stylelint Config
 
-`@kriac/stylelint-config` 提供了统一的 CSS / SCSS 样式规范，支持 Vue 单文件组件。
-
-## 使用
+## 配置
 
 ### stylelint.config.mjs
 
@@ -11,3 +9,7 @@ export default {
   extends: ["@kriac/stylelint-config"],
 };
 ```
+
+## 文档
+
+- [说明文档](https://kriac.github.io/lint-kit/)
