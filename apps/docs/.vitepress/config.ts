@@ -54,6 +54,10 @@ export default defineConfig({
             text: "IDE 支持",
             link: "/guide/ide",
           },
+          {
+            text: "插件生态",
+            link: "/guide/ecosystem",
+          },
         ],
       },
     ],
