@@ -23,8 +23,8 @@
     "czg": ">=1.0.0"
   },
   "devDependencies": {
-    "@types/node": "25.0.10",
-    "czg": "1.12.0",
+    "@types/node": "25.6.0",
+    "czg": "1.13.0",
     "tsdown": "0.21.0",
     "vue-tsc": "3.2.1"
   },

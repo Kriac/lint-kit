@@ -24,15 +24,15 @@
   },
   "dependencies": {
     "postcss-html": "1.8.1",
-    "stylelint-config-recess-order": "7.6.0",
+    "stylelint-config-recess-order": "7.7.0",
     "stylelint-config-recommended-vue": "1.6.1",
     "stylelint-config-standard": "40.0.0",
     "stylelint-config-standard-scss": "17.0.0",
-    "stylelint-order": "7.0.1"
+    "stylelint-order": "8.1.1"
   },
   "devDependencies": {
-    "@types/node": "25.0.10",
-    "stylelint": "17.0.0",
+    "@types/node": "25.6.0",
+    "stylelint": "17.8.0",
     "tsdown": "0.21.0",
     "vue-tsc": "3.2.1"
   },

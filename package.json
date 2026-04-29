@@ -1,6 +1,5 @@
 {
   "private": true,
-  "version": "0.0.1",
   "packageManager": "pnpm@10.25.0",
   "scripts": {
     "prepare": "husky",
@@ -28,12 +27,12 @@
     "@kriac/eslint-config": "workspace:*",
     "@kriac/stylelint-config": "workspace:*",
     "commitlint": "20.3.0",
-    "czg": "1.12.0",
-    "eslint": "9.39.2",
+    "czg": "1.13.0",
+    "eslint": "9.39.4",
     "husky": "9.1.7",
-    "lint-staged": "16.2.7",
+    "lint-staged": "16.4.0",
     "prettier": "3.7.2",
-    "stylelint": "17.0.0",
+    "stylelint": "17.8.0",
     "typescript": "5.8.2"
   },
   "config": {
