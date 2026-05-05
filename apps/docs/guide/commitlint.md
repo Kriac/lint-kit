@@ -1,19 +1,10 @@
 # Commitlint 配置
 
-`@kriac/commitlint-config` 提供了统一的提交信息规范配置，基于 `czg` 生成交互式提交配置，并内置常用的 Conventional Commits 类型约束。
+`@kriac/commitlint-config` 提供了统一的提交信息规范配置，同时使用 `czg` 工具可以实现交互式的 commit 信息流程。
 
-内置提交类型包括：
+内置配置包括：
 
-- `feat`
-- `fix`
-- `style`
-- `refactor`
-- `perf`
-- `test`
-- `ci`
-- `docs`
-- `chore`
-- `revert`
+- `Conventional Commits type`
 
 ## 配置
 

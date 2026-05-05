@@ -1,16 +1,16 @@
 # Lint-Kit
 
-一个基于社区实践的 lint 配置集合，旨在为 vue3 + ts 项目提供统一的配置。
+一套基于社区实践的 lint 配置集合，旨在为 vue3 + ts 项目提供统一的配置。
 
 ## 安装
 
-让我们开始吧，首先您需要在根目录下安装运行时依赖：
+让我们开始吧，首先您需要在根目录下安装运行时依赖（最好是安装指定的版本）：
 
 ```bash
-pnpm i -D eslint stylelint commitlint czg
+pnpm i -D eslint@9.39.4 stylelint@17.8.0 commitlint@20.3.0 czg@1.13.0
 ```
 
-接下来安装统一的配置依赖：
+接下来安装统一的 lint 配置：
 
 ```bash
 pnpm i -D @kriac/lint-kit

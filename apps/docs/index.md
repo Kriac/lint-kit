@@ -3,8 +3,8 @@ layout: home
 
 hero:
   name: Lint Kit
-  text: 统一的 Lint 配置集合
-  tagline: 基于社区实践，为 Vue3 + TS 项目提供开箱即用的 ESLint、Stylelint、Commitlint 配置。
+  text: 一套基于社区实践的 lint 配置集合
+  tagline: 为 Vue3 + TS 项目提供开箱即用的 ESLint、Stylelint、Commitlint 配置。
   actions:
     - theme: brand
       text: 快速开始

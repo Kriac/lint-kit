@@ -1,13 +1,8 @@
----
-title: 插件生态
-outline: deep
----
-
 # 插件生态
 
 这里整理了 Lint Kit 直接依赖或重点参考过的项目，非常感谢所有的开源项目。
 
-## ESLint 生态
+## ESLint
 
 - [ESLint](https://github.com/eslint/eslint)：JS / TS 代码检查核心。
 - [typescript-eslint](https://github.com/typescript-eslint/typescript-eslint)：TS 解析器与类型感知规则。
@@ -15,7 +10,7 @@ outline: deep
 - [eslint-plugin-perfectionist](https://github.com/azat-io/eslint-plugin-perfectionist)：导入、成员排序规则。
 - [eslint-config-prettier](https://github.com/prettier/eslint-config-prettier)：关闭与 Prettier 冲突的规则。
 
-## Stylelint 生态
+## Stylelint
 
 - [Stylelint](https://github.com/stylelint/stylelint)：CSS 代码检查核心。
 - [stylelint-order](https://github.com/hudochenkov/stylelint-order)：样式属性排序规则。
@@ -25,12 +20,12 @@ outline: deep
 - [stylelint-config-recess-order](https://github.com/stormwarning/stylelint-config-recess-order)：CSS 属性排序预设。
 - [postcss-html](https://github.com/ota-meshi/postcss-html)：HTML / Vue 文件样式块解析器。
 
-## Commitlint 生态
+## Commitlint
 
 - [Commitlint](https://github.com/conventional-changelog/commitlint)：校验 Commit Message 是否符合 Conventional Commits 规范。
 - [czg](https://github.com/Zhengqbbb/cz-git)：交互式提交工具，引导生成规范提交信息。
 
-## Prettier 生态
+## Prettier
 
 - [Prettier](https://github.com/prettier/prettier)：统一代码格式化，支持 JS、TS、Vue、CSS、JSON、Markdown 等格式。
 
