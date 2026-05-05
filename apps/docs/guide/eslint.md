@@ -1,6 +1,6 @@
 # ESLint 配置
 
-`@kriac/eslint-config` 提供了预配置的 ESLint 规则集，支持 Vue、TypeScript 和 JSX/TSX，并集成常用的导入排序与 Prettier 兼容配置。
+`@kriac/eslint-config` 提供了统一的 ESLint 规则集，支持 Vue、TypeScript 和 JSX/TSX，同时集成了 Prettier 兼容插件。
 
 内置配置包括：
 

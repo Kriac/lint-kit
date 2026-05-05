@@ -1,14 +1,14 @@
 # Stylelint 配置
 
-`@kriac/stylelint-config` 提供了统一的 CSS / SCSS 样式规范配置，支持 Vue 单文件组件与 HTML 中的样式块，并集成常用的属性排序规则。
+`@kriac/stylelint-config` 提供了统一的 CSS / SCSS 样式规范配置，支持 Vue 单文件组件与 HTML 中的样式块，同时集成了属性自动排序规则。
 
 内置配置包括：
 
 - `stylelint-config-standard`
 - `stylelint-config-standard-scss`
 - `stylelint-config-recommended-vue`
-- `stylelint-config-recess-order`
 - `stylelint-order`
+- `stylelint-config-recess-order`
 
 ## 配置
 
@@ -25,10 +25,7 @@ export default {
 ```js
 export default {
   extends: ["@kriac/stylelint-config"],
-  rules: {
-    "color-hex-length": "short",
-    "declaration-no-important": true,
-  },
+  rules: {},
 };
 ```
 
@@ -47,17 +44,6 @@ export default {
   ],
 };
 ```
-
-## 默认扩展配置
-
-- `stylelint-config-standard`
-- `stylelint-config-standard-scss`
-- `stylelint-config-recommended-vue`
-- `stylelint-config-recess-order`
-
-## 使用到的插件
-
-- `stylelint-order`
 
 ## 默认关闭的规则
 
