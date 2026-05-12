@@ -1,16 +1,3 @@
-/* Global Styles */
-:root {
-  --primary: #10b981;
-  --primary-dark: #04835b;
-  --secondary: #6366f1;
-  --bg-dark: #0f172a;
-  --bg-card: #1e293b;
-  --text-primary: #f1f5f9;
-  --text-secondary: #d2deee;
-  --border: #334155;
-  --accent: #f59e0b;
-}
-
 * {
   box-sizing: border-box;
   padding: 0;
@@ -18,49 +5,7 @@
 }
 
 html,
-body {
-  padding: 0;
-  margin: 0;
-}
-
-body {
-  min-height: 100vh;
-  font-family:
-    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue",
-    Arial, sans-serif;
-  color: var(--text-primary);
-  background: linear-gradient(135deg, #0f172a 0%, #0a1628 100%);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
+body,
 #app {
-  width: 100%;
-  padding: 0;
-  margin: 0 auto;
-}
-
-/* Scrollbar */
-::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #475569;
-  border-radius: 5px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #64748b;
-}
-
-/* Selection */
-::selection {
-  color: #f1f5f9;
-  background-color: rgb(16 185 129 / 35%);
+  min-height: 100%;
 }

@@ -1,57 +1,71 @@
 <script setup lang="ts">
-import type { Feature } from "./types";
-import { ref } from "vue";
-import { FEATURES, STATS } from "./configs/constants";
-import CTA from "./components/CTA.vue";
-import Hero from "./components/Hero.vue";
-import Stats from "./components/Stats.vue";
-import Features from "./components/Features.vue";
-import Showcase from "./components/Showcase.vue";
-import HeaderView from "./components/Header.vue";
-import FooterView from "./components/Footer.vue";
+import { computed, ref } from "vue";
 
-const activeTab = ref("文档");
-const selectedFeature = ref<Feature | null>(FEATURES[0]);
-
-const handleTabChange = (tab: string) => {
-  activeTab.value = tab;
-};
-
-const handleSelectFeature = (feature: Feature) => {
-  selectedFeature.value = feature;
-};
+const title = ref("Hello World");
+const message = computed(() => {
+  return "A tiny Vue demo for ESLint and Stylelint checks.";
+});
 </script>
 
 <template>
-  <div id="app" class="app">
-    <HeaderView :active-tab="activeTab" @tab-change="handleTabChange" />
-    <main class="main">
-      <Hero />
-      <Features
-        :features="FEATURES"
-        :selected-feature="selectedFeature"
-        @select="handleSelectFeature"
-      />
-      <Showcase v-model="selectedFeature" />
-      <Stats :stats="STATS" />
-      <CTA />
-    </main>
-    <FooterView />
-  </div>
+  <main class="demo-page">
+    <section class="hero">
+      <p class="eyebrow">lint-kit demo</p>
+      <h1>{{ title }}</h1>
+      <p class="summary">{{ message }}</p>
+    </section>
+  </main>
 </template>
 
 <style scoped>
-.app {
-  display: flex;
-  flex-direction: column;
+.demo-page {
+  display: grid;
+  gap: 1rem;
   min-height: 100vh;
+  padding: 2rem;
+  color: #1f2937;
 }
 
-.main {
-  flex: 1;
-  width: 100%;
-  max-width: 1200px;
-  padding: 0 2rem;
-  margin: 0 auto;
+.hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgb(255 255 255 / 80%);
+  border: 1px solid rgb(15 23 42 / 10%);
+  border-radius: 20px;
+  box-shadow: 0 18px 45px rgb(15 23 42 / 8%);
+  backdrop-filter: blur(14px);
+}
+
+.hero {
+  padding: 2rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #0f766e;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+}
+
+h1,
+p {
+  margin: 0;
+}
+
+h1 {
+  max-width: 12ch;
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  line-height: 0.96;
+}
+
+.summary {
+  margin-top: 1rem;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: #475569;
 }
 </style>
