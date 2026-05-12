@@ -31,6 +31,12 @@ const config: Linter.Config = {
         groups: importOrders.flat(),
       },
     ],
+    "perfectionist/sort-named-imports": [
+      "error",
+      {
+        type: "alphabetical",
+      },
+    ],
   },
 };
 
