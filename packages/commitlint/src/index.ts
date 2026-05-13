@@ -1,6 +1,6 @@
 import type { PluginOptions } from "./types";
 import { defineConfig } from "czg";
-import { types, typeValues } from "./modules/czg-config";
+import { types } from "./modules/czg-config";
 
 export default function (opts?: PluginOptions) {
   const { scopes = [], rules = {} } = opts || {};
@@ -9,7 +9,7 @@ export default function (opts?: PluginOptions) {
     // 提交类型
     types,
 
-    // 提交范围
+    // 扩展范围
     scopes,
 
     // 跳过问题
@@ -19,8 +19,8 @@ export default function (opts?: PluginOptions) {
     rules: {
       // 必须要定义类型
       "type-empty": [2, "never"],
-      // 类型必须在枚举范围内
-      "type-enum": [2, "always", typeValues],
+      // 类型必须符合预设的类型
+      "type-enum": [2, "always", types.map((item) => item.value)],
 
       // 自定义规则
       ...rules,

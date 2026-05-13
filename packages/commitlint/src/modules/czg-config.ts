@@ -43,8 +43,3 @@ export const types: Optional[] = [
     value: "revert",
   },
 ];
-
-/** 类型值 */
-export const typeValues = types.map((item) => {
-  return item.value;
-});
