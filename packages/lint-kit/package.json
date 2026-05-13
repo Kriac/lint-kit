@@ -20,13 +20,13 @@
     "release": "npm publish --access public"
   },
   "peerDependencies": {
-    "czg": ">=1.0.0",
-    "eslint": ">=9.0.0",
-    "stylelint": ">=17.0.0"
+    "czg": "^1.0.0",
+    "eslint": "^9.0.0",
+    "stylelint": "^17.0.0"
   },
   "dependencies": {
     "@kriac/commitlint-config": "0.6.0",
-    "@kriac/eslint-config": "0.6.0",
+    "@kriac/eslint-config": "0.7.0",
     "@kriac/stylelint-config": "0.6.0",
     "stylelint-config-recess-order": "7.7.0",
     "stylelint-config-recommended-vue": "1.6.1",
