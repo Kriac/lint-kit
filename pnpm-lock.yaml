@@ -354,12 +354,12 @@ packages:
       }
     engines: { node: ">=6.9.0" }
 
-  "@babel/helper-string-parser@8.0.0-rc.4":
+  "@babel/helper-string-parser@8.0.0-rc.5":
     resolution:
       {
-        integrity: sha512-dluR3v287dp6YPF57kyKKrHPKffUeuxH1zQcF1WD30TeFzWXhDiVi1U6PkqaDB0++H1PeCwRhmYl4DvoerlPIw==,
+        integrity: sha512-sN7R8rBvDurfaziNfDEIjIntlazmlkCDGO4SNl2RJ3wRCn+QxspLV7hzYAE8WWVd2joVuT8sUxeePdLp2idI1A==,
       }
-    engines: { node: ^20.19.0 || >=22.12.0 }
+    engines: { node: ^22.18.0 || >=24.11.0 }
 
   "@babel/helper-validator-identifier@7.28.5":
     resolution:
@@ -374,6 +374,13 @@ packages:
         integrity: sha512-HTD3bskipk5MSm08twTW6832jzIXUhxMddy4NPPzIMuyMEsrs0ZgwAaMj5ubB5+6hMlUjDu17vNconEmwsmpYg==,
       }
     engines: { node: ^20.19.0 || >=22.12.0 }
+
+  "@babel/helper-validator-identifier@8.0.0-rc.5":
+    resolution:
+      {
+        integrity: sha512-ehJDxHvtbZ85RtX/L2fi0h9AGsBNqB5Euv1EB8RMAvGYvD+2X+QbpzzOpbklnNXO+WSZJNOaetw2BBj27xsWVg==,
+      }
+    engines: { node: ^22.18.0 || >=24.11.0 }
 
   "@babel/parser@7.29.3":
     resolution:
@@ -398,12 +405,12 @@ packages:
       }
     engines: { node: ">=6.9.0" }
 
-  "@babel/types@8.0.0-rc.4":
+  "@babel/types@8.0.0-rc.5":
     resolution:
       {
-        integrity: sha512-bw30DV880P/VYtsjWWdoWmJpb9S2Vn1/PqayyccTELzRQ/HslIO7+BD9rNoZ4AAFOAjC1vrNeBCkAsyh6Ibfww==,
+        integrity: sha512-JeSVu/m8x/zpp4CLjYHVNXuhEyOkhPXuxM8YOXjh6L4LlvQNKuUNOTo5KdBuKAcTDHw8DquToTaEkhsBqPXOaA==,
       }
-    engines: { node: ^20.19.0 || >=22.12.0 }
+    engines: { node: ^22.18.0 || >=24.11.0 }
 
   "@cacheable/memory@2.0.8":
     resolution:
@@ -2074,10 +2081,10 @@ packages:
       }
     engines: { node: ">= 14.0.0" }
 
-  alien-signals@3.1.2:
+  alien-signals@3.2.0:
     resolution:
       {
-        integrity: sha512-d9dYqZTS90WLiU0I5c6DHj/HcKkF8ZyGN3G5x8wSbslulz70KOxaqCT0hQCo9KOyhVqzqGojvNdJXoTumZOtcw==,
+        integrity: sha512-5J9+NpCLHgic4xnZtI8SznvNagwJsZSvRFsAwoLlLw+Edaqa4upCiOC19P8Vx2DqmEvqK2qJBMtI8+9eXOEb/A==,
       }
 
   ansi-escapes@7.3.0:
@@ -4758,7 +4765,7 @@ snapshots:
   "@babel/generator@8.0.0-rc.4":
     dependencies:
       "@babel/parser": 8.0.0-rc.4
-      "@babel/types": 8.0.0-rc.4
+      "@babel/types": 8.0.0-rc.5
       "@jridgewell/gen-mapping": 0.3.13
       "@jridgewell/trace-mapping": 0.3.31
       "@types/jsesc": 2.5.1
@@ -4766,11 +4773,13 @@ snapshots:
 
   "@babel/helper-string-parser@7.27.1": {}
 
-  "@babel/helper-string-parser@8.0.0-rc.4": {}
+  "@babel/helper-string-parser@8.0.0-rc.5": {}
 
   "@babel/helper-validator-identifier@7.28.5": {}
 
   "@babel/helper-validator-identifier@8.0.0-rc.4": {}
+
+  "@babel/helper-validator-identifier@8.0.0-rc.5": {}
 
   "@babel/parser@7.29.3":
     dependencies:
@@ -4778,17 +4787,17 @@ snapshots:
 
   "@babel/parser@8.0.0-rc.4":
     dependencies:
-      "@babel/types": 8.0.0-rc.4
+      "@babel/types": 8.0.0-rc.5
 
   "@babel/types@7.29.0":
     dependencies:
       "@babel/helper-string-parser": 7.27.1
       "@babel/helper-validator-identifier": 7.28.5
 
-  "@babel/types@8.0.0-rc.4":
+  "@babel/types@8.0.0-rc.5":
     dependencies:
-      "@babel/helper-string-parser": 8.0.0-rc.4
-      "@babel/helper-validator-identifier": 8.0.0-rc.4
+      "@babel/helper-string-parser": 8.0.0-rc.5
+      "@babel/helper-validator-identifier": 8.0.0-rc.5
 
   "@cacheable/memory@2.0.8":
     dependencies:
@@ -5722,7 +5731,7 @@ snapshots:
       "@volar/language-core": 2.4.27
       "@vue/compiler-dom": 3.5.34
       "@vue/shared": 3.5.34
-      alien-signals: 3.1.2
+      alien-signals: 3.2.0
       muggle-string: 0.4.1
       path-browserify: 1.0.1
       picomatch: 4.0.4
@@ -5841,7 +5850,7 @@ snapshots:
       "@algolia/requester-fetch": 5.52.1
       "@algolia/requester-node-http": 5.52.1
 
-  alien-signals@3.1.2: {}
+  alien-signals@3.2.0: {}
 
   ansi-escapes@7.3.0:
     dependencies:
