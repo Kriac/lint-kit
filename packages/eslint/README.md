@@ -1,17 +1,5 @@
 # ESLint Config
 
-## 配置
-
-### eslint.config.mjs
-
-```js
-import config from "@kriac/eslint-config";
-
-export default config({
-  // ...
-});
-```
-
 ## 文档
 
-- [说明文档](https://kriac.github.io/lint-kit/)
+请阅读 [文档](https://kriac.github.io/lint-kit/guide/eslint.html) 了解更多使用细节。

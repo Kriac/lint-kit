@@ -1,15 +1,5 @@
 # Stylelint Config
 
-## 配置
-
-### stylelint.config.mjs
-
-```js
-export default {
-  extends: ["@kriac/stylelint-config"],
-};
-```
-
 ## 文档
 
-- [说明文档](https://kriac.github.io/lint-kit/)
+请阅读 [文档](https://kriac.github.io/lint-kit/guide/stylelint.html) 了解更多使用细节。
