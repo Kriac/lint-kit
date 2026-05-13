@@ -1,17 +1,5 @@
 # Commitlint Config
 
-## 配置
-
-### commitlint.config.mjs
-
-```js
-import config from "@kriac/commitlint-config";
-
-export default config({
-  // ...
-});
-```
-
 ## 文档
 
-- [说明文档](https://kriac.github.io/lint-kit/)
+请阅读 [文档](https://kriac.github.io/lint-kit/guide/commitlint.html) 了解更多使用细节。
