@@ -121,19 +121,19 @@ importers:
         specifier: 0.6.0
         version: 0.6.0(czg@1.13.0)
       "@kriac/eslint-config":
-        specifier: 0.6.0
-        version: 0.6.0(@typescript-eslint/parser@8.54.0(eslint@9.39.4(jiti@2.6.1))(typescript@5.8.2))(eslint@9.39.4(jiti@2.6.1))(typescript@5.8.2)
+        specifier: 0.7.0
+        version: 0.7.0(@typescript-eslint/parser@8.54.0(eslint@9.39.4(jiti@2.6.1))(typescript@5.8.2))(eslint@9.39.4(jiti@2.6.1))(typescript@5.8.2)
       "@kriac/stylelint-config":
         specifier: 0.6.0
         version: 0.6.0(postcss@8.5.14)(stylelint@17.8.0(typescript@5.8.2))
       czg:
-        specifier: ">=1.0.0"
+        specifier: ^1.0.0
         version: 1.13.0
       eslint:
-        specifier: ">=9.0.0"
+        specifier: ^9.0.0
         version: 9.39.4(jiti@2.6.1)
       stylelint:
-        specifier: ">=17.0.0"
+        specifier: ^17.0.0
         version: 17.8.0(typescript@5.8.2)
       stylelint-config-recess-order:
         specifier: 7.7.0
@@ -1040,10 +1040,10 @@ packages:
     peerDependencies:
       czg: ">=1.0.0"
 
-  "@kriac/eslint-config@0.6.0":
+  "@kriac/eslint-config@0.7.0":
     resolution:
       {
-        integrity: sha512-6tXIuG25uZYkRZ8tF5Yf1uW1Tj6EjuFL3rvfckdnFrv5/mf+N+sEC+Li16bZKoz35WaqbiS48rxlry7xIoquGg==,
+        integrity: sha512-n0JhvxdbmTvdauooRUwaOK79hBDuhbSWRo4qBxAGCw5VnynNlTZqw0YG1KsC9am4LfKJbCscKre20FtzQNZOXQ==,
       }
     peerDependencies:
       eslint: ">=9.0.0"
@@ -5160,7 +5160,7 @@ snapshots:
     dependencies:
       czg: 1.13.0
 
-  "@kriac/eslint-config@0.6.0(@typescript-eslint/parser@8.54.0(eslint@9.39.4(jiti@2.6.1))(typescript@5.8.2))(eslint@9.39.4(jiti@2.6.1))(typescript@5.8.2)":
+  "@kriac/eslint-config@0.7.0(@typescript-eslint/parser@8.54.0(eslint@9.39.4(jiti@2.6.1))(typescript@5.8.2))(eslint@9.39.4(jiti@2.6.1))(typescript@5.8.2)":
     dependencies:
       "@eslint/js": 9.39.4
       eslint: 9.39.4(jiti@2.6.1)
