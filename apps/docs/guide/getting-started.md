@@ -4,10 +4,10 @@
 
 ## 安装
 
-让我们开始吧，首先您需要在根目录下安装运行时依赖（最好是安装指定的版本）：
+首先您需要在根目录下安装运行时依赖（最好是安装指定的版本）：
 
 ```bash
-pnpm i -D eslint@9.39.4 stylelint@17.8.0 commitlint@20.3.0 czg@1.13.0
+pnpm i -D eslint@9.39.4 stylelint@17.8.0 commitlint@20.3.0
 ```
 
 接下来安装统一的 lint 配置：
@@ -74,21 +74,6 @@ export default config({
 }
 ```
 
-## IDE 支持
+## 使用
 
-请安装 vscode 插件:
-
-1. [Eslint 插件](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint)
-2. [Stylelint 插件](https://marketplace.visualstudio.com/items?itemName=stylelint.vscode-stylelint)
-
-请将以下设置添加到你的设置中 `.vscode/settings.json`:
-
-```json
-{
-  "stylelint.validate": ["html", "css", "vue", "scss"],
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit",
-    "source.fixAll.stylelint": "explicit"
-  }
-}
-```
+如果你在开发过程中遇到了什么问题，或者有更好的建议，欢迎提交 issue 与我们讨论。
