@@ -23,15 +23,21 @@ export default defineConfig({
     sidebar: [
       {
         text: "介绍",
+        collapsed: false,
         items: [
           {
             text: "快速开始",
             link: "/guide/getting-started",
           },
+          {
+            text: "工作流集成",
+            link: "/guide/workflow",
+          },
         ],
       },
       {
         text: "配置",
+        collapsed: false,
         items: [
           {
             text: "ESLint",
@@ -49,14 +55,15 @@ export default defineConfig({
       },
       {
         text: "推荐",
+        collapsed: false,
         items: [
           {
             text: "IDE 支持",
             link: "/guide/ide",
           },
           {
-            text: "插件生态",
-            link: "/guide/ecosystem",
+            text: "社区项目",
+            link: "/guide/community",
           },
         ],
       },
@@ -73,6 +80,10 @@ export default defineConfig({
     docFooter: {
       prev: "上一篇",
       next: "下一篇",
+    },
+    footer: {
+      copyright: "Copyright © 2024-present Kriac. All rights reserved.",
+      message: "Released under the MIT License.",
     },
   },
 });
