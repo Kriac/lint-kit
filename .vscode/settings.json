@@ -1,8 +1,8 @@
 {
   "css.validate": false,
-  "stylelint.validate": ["html", "css", "vue", "scss"],
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit",
     "source.fixAll.stylelint": "explicit"
-  }
+  },
+  "stylelint.validate": ["html", "css", "vue", "scss"]
 }
