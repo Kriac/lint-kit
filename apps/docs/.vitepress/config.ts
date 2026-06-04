@@ -8,7 +8,7 @@ export default defineConfig({
   base,
   title: "Lint Kit",
   description:
-    "一个基于社区实践的个人 lint 配置集合，旨在为 vue3 + ts 项目提供统一的配置。",
+    "一套基于社区实践的 lint 配置集合，旨在为 vue3 + ts 项目提供统一的配置。",
   lang: "zh-CN",
   themeConfig: {
     search: {
@@ -62,8 +62,8 @@ export default defineConfig({
             link: "/guide/ide",
           },
           {
-            text: "社区项目",
-            link: "/guide/community",
+            text: "参考项目",
+            link: "/guide/reference",
           },
         ],
       },
