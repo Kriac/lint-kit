@@ -10,13 +10,10 @@
 
     "jsx": "preserve",
 
+    "strict": true,
     "noEmit": true,
     "skipLibCheck": true,
-
-    "strict": true,
     "isolatedModules": true,
-    "resolveJsonModule": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true
+    "resolveJsonModule": true
   }
 }
