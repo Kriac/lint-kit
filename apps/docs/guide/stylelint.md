@@ -4,9 +4,8 @@
 
 内置配置包括：
 
-- `stylelint-config-standard`
-- `stylelint-config-standard-scss`
 - `stylelint-config-recommended-vue`
+- `stylelint-config-standard-scss`
 - `stylelint-order`
 - `stylelint-config-recess-order`
 
