@@ -8,7 +8,7 @@
 
 1. [ESLint](https://marketplace.visualstudio.com/items?itemName=dbaeumer.vscode-eslint) — 提供 ESLint 规则的实时提示与自动修复
 2. [Stylelint](https://marketplace.visualstudio.com/items?itemName=stylelint.vscode-stylelint) — 提供样式规则的实时提示与自动修复
-3. [Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) — 提供代码格式化支持
+3. [Prettier - Code formatter](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) — 提供代码格式化支持与自动修复
 
 ## 编辑器设置
 
@@ -16,13 +16,12 @@
 
 ```json
 {
-  "editor.formatOnSave": true,
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "stylelint.validate": ["html", "css", "vue", "scss"],
+  "css.validate": false,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit",
     "source.fixAll.stylelint": "explicit"
-  }
+  },
+  "stylelint.validate": ["html", "css", "vue", "scss"]
 }
 ```
 
@@ -43,9 +42,9 @@
 ```json
 {
   "recommendations": [
+    "esbenp.prettier-vscode",
     "dbaeumer.vscode-eslint",
-    "stylelint.vscode-stylelint",
-    "esbenp.prettier-vscode"
+    "stylelint.vscode-stylelint"
   ]
 }
 ```
