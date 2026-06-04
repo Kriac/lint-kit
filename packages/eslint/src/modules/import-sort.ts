@@ -19,6 +19,7 @@ const importOrders = importTypes
   })
   .flat();
 
+// Eslint 配置
 const config: Linter.Config = {
   plugins: {
     perfectionist,
@@ -36,6 +37,13 @@ const config: Linter.Config = {
     ],
     // 导入属性排序
     "perfectionist/sort-named-imports": [
+      "error",
+      {
+        type: "alphabetical",
+      },
+    ],
+    // 导出属性排序
+    "perfectionist/sort-named-exports": [
       "error",
       {
         type: "alphabetical",
