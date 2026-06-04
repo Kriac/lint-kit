@@ -14,7 +14,17 @@ export default function (opts?: PluginOptions) {
     // 忽略文件配置
     globalIgnores(["**/node_modules", "**/dist", ...ignores]),
 
-    // 文件解析器配置
+    // JS 最佳实践
+    eslint.configs.recommended,
+
+    // TS 最佳实践
+    tsEslint.configs.recommended,
+    tsEslint.configs.stylistic,
+
+    // VUE 最佳实践
+    vuePlugin.configs["flat/recommended"],
+
+    // Vue SFC 解析器配置
     {
       files: ["**/*.vue", "**/*.tsx"],
       languageOptions: {
@@ -28,29 +38,19 @@ export default function (opts?: PluginOptions) {
       },
     },
 
-    // JS 最佳实践
-    eslint.configs.recommended,
-
-    // TS 最佳实践
-    tsEslint.configs.recommended,
-    tsEslint.configs.stylistic,
-
-    // VUE 最佳实践
-    vuePlugin.configs["flat/recommended"],
-
-    // 导入顺序最佳实践
+    // Import Sort 配置
     ImportSortConfig,
 
     // 自定义规则
     {
       rules: {
-        // 全局变量校验 - 禁用原因: 全局变量交由 tsc 校验
+        // 关闭全局变量校验，交由 tsc 校验
         "no-undef": "off",
-        // 空对象类型校验 - 禁用原因: 扩展接口时可能需要使用空对象类型
-        "@typescript-eslint/no-empty-object-type": "off",
-        // vue 模板根节点校验 - 禁用原因: 部分工具需要vue单文件但是可能没有子节点
+        // 启用一致的类型导入，提升代码可读性和维护性
+        "@typescript-eslint/consistent-type-imports": "error",
+        // 关闭 vue 模板根节点校验，部分工具可能需要 vue sfc 并且没有子节点
         "vue/valid-template-root": "off",
-        // vue 组件名多单词校验 - 禁用原因: 组件作为页面的情况可能是单单词
+        // 关闭 vue 组件名多单词校验，组件作为页面的情况可能是单单词
         "vue/multi-word-component-names": "off",
       },
     },
