@@ -3,8 +3,8 @@ layout: home
 
 hero:
   name: Lint Kit
-  text: 一套基于社区实践的 lint 配置集合
-  tagline: 为 Vue3 + TS 项目提供开箱即用的 ESLint、Stylelint、Commitlint 配置。
+  text: 统一的代码风格，减少无效争论
+  tagline: 为 Vue3 + TS 项目提供开箱即用的 ESLint、Stylelint、Commitlint 预设。
   actions:
     - theme: brand
       text: 快速开始
@@ -30,15 +30,3 @@ features:
     link: /guide/commitlint
     linkText: 查看配置
 ---
-
-<style>
-:root {
-  --vp-home-hero-name-color: transparent;
-  --vp-home-hero-name-background: linear-gradient(120deg, #bd34fe 30%, #41d1ff);
-}
-
-.VPHero {
-  padding: 18px;
-  filter: drop-shadow(-2px 4px 6px rgb(0 0 0 / 20%));
-}
-</style>

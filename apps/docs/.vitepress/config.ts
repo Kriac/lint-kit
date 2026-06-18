@@ -7,8 +7,7 @@ const base = isGithubActions && repo ? `/${repo}/` : "/";
 export default defineConfig({
   base,
   title: "Lint Kit",
-  description:
-    "一套基于社区实践的 lint 配置集合，旨在为 vue3 + ts 项目提供统一的配置。",
+  description: "统一的代码风格，减少无效争论",
   lang: "zh-CN",
   themeConfig: {
     search: {
