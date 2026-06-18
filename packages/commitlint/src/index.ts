@@ -9,17 +9,17 @@ export default function (opts?: PluginOptions) {
     // 提交类型
     types,
 
-    // 扩展范围
+    // 所属业务域
     scopes,
 
-    // 跳过问题
+    // 配置 cli 跳过的问题
     skipQuestions: ["body", "breaking", "footerPrefix", "footer"],
 
-    // 扩展规则
+    // 自定义规则
     rules: {
-      // 必须要定义类型
+      // 每次提交必须要包含提交类型
       "type-empty": [2, "never"],
-      // 类型必须符合预设的类型
+      // 提交的类型必须符合系统预设
       "type-enum": [
         2,
         "always",
@@ -28,7 +28,6 @@ export default function (opts?: PluginOptions) {
         }),
       ],
 
-      // 自定义规则
       ...rules,
     },
   });
