@@ -20,7 +20,13 @@ export default function (opts?: PluginOptions) {
       // 必须要定义类型
       "type-empty": [2, "never"],
       // 类型必须符合预设的类型
-      "type-enum": [2, "always", types.map((item) => item.value)],
+      "type-enum": [
+        2,
+        "always",
+        types.map((item) => {
+          return item.value;
+        }),
+      ],
 
       // 自定义规则
       ...rules,
