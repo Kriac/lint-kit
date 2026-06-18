@@ -11,7 +11,6 @@ export default function (opts?: PluginOptions) {
   const { ignores = [], configs = [] } = opts || {};
 
   return defineConfig([
-    // 忽略文件配置
     globalIgnores(["**/node_modules", "**/dist", ...ignores]),
 
     // JS 最佳实践
@@ -23,8 +22,6 @@ export default function (opts?: PluginOptions) {
 
     // VUE 最佳实践
     vuePlugin.configs["flat/recommended"],
-
-    // Vue SFC 解析器配置
     {
       files: ["**/*.vue", "**/*.tsx"],
       languageOptions: {
@@ -41,24 +38,27 @@ export default function (opts?: PluginOptions) {
     // Import Sort 配置
     ImportSortConfig,
 
+    // 格式化风格
+    prettierConfig,
+
     // 自定义规则
     {
       rules: {
-        // 关闭全局变量校验，交由 tsc 校验
-        "no-undef": "off",
-        // 启用一致的类型导入，提升代码可读性和维护性
+        // 统一使用完整写法，避免单行/多行的写法不同
+        curly: ["error", "all"],
+        "arrow-body-style": ["error", "always"],
+        // 统一区分普通导入和类型导入
         "@typescript-eslint/consistent-type-imports": "error",
-        // 关闭 vue 模板根节点校验，部分工具可能需要 vue sfc 并且没有子节点
+
+        // 关闭全局变量校验，交由 tsc 类型校验
+        "no-undef": "off",
+        // 关闭 vue 模板根节点校验，部分工具可能需要 vue sfc 但它没有子节点
         "vue/valid-template-root": "off",
         // 关闭 vue 组件名多单词校验，组件作为页面的情况可能是单单词
         "vue/multi-word-component-names": "off",
       },
     },
 
-    // 自定义配置
     ...configs,
-
-    // 格式化风格
-    prettierConfig,
   ]);
 }
