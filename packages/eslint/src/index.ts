@@ -5,7 +5,7 @@ import tsEslint from "typescript-eslint";
 import vueParser from "vue-eslint-parser";
 import vuePlugin from "eslint-plugin-vue";
 import prettierConfig from "eslint-config-prettier";
-import ImportSortConfig from "./modules/import-sort";
+import perfectionistConfig from "./modules/perfectionist";
 
 export default function (opts?: PluginOptions) {
   const { ignores = [], configs = [] } = opts || {};
@@ -35,8 +35,8 @@ export default function (opts?: PluginOptions) {
       },
     },
 
-    // Import Sort 配置
-    ImportSortConfig,
+    // 排序最佳实践
+    perfectionistConfig,
 
     // 格式化风格
     prettierConfig,
