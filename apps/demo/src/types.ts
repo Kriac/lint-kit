@@ -1,26 +1,23 @@
 import type { Ref } from "vue";
 import { computed, ref } from "vue";
 
-/** 测试类型A */
+// 测试联合类型排序
 export type TestTypeA = "a0" | "a1" | "a2";
 
-/** 测试类型B */
-export type TestTypeB<T> = "b0" | "b1" | "b2" | T;
+// 测试泛型联合排序
+export type TestUnionType = Ref<string, number> | TestTypeA;
 
-/** 测试联合类型排序 */
-export type TestUnionType = Ref<string, number> | TestTypeA | TestTypeB<string>;
+// 测试交叉类型排序
+export type TestIntersectionType = TestTypeA & TestUnionType;
 
-/** 测试交叉类型排序 */
-export type TestIntersectionType = TestTypeA & TestTypeB<string>;
-
-/** 测试对象类型排序 */
+// 测试对象类型排序
 export type TestSortObjectTypes = {
   x: number;
   y: number;
   z: string;
 } & TestSortInterfaces;
 
-/** 测试接口类型排序 */
+// 测试接口类型排序
 export interface TestSortInterfaces {
   a: string;
   b: number;
