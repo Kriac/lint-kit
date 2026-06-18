@@ -1,7 +1,5 @@
 # Lint-Kit
 
-一套基于社区实践的 lint 配置集合，旨在为 vue3 + ts 项目提供统一的配置。
-
 ## 文档
 
 请阅读 [文档](https://kriac.github.io/lint-kit) 了解更多使用细节。
