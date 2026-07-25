@@ -4,7 +4,7 @@ layout: home
 hero:
   name: Lint Kit
   text: 一套开箱即用的前端工程规范
-  tagline: 旨在为 Vue3 + TS 项目提供开箱即用的 ESLint、Stylelint、Commitlint 预设
+  tagline: 为您的项目提供统一、可定制的代码规范
   actions:
     - theme: brand
       text: 快速开始

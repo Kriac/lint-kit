@@ -1,6 +1,6 @@
 # Lint-Kit 是什么?
 
-Lint-Kit 是一套开箱即用的前端工程规范，旨在为项目提供统一、可复用的代码质量配置。
+Lint-Kit 是一套开箱即用的前端工程规范，旨在为您的项目提供统一、可定制的代码规范
 
 ## 安装
 
@@ -23,9 +23,7 @@ pnpm i -D @kriac/lint-kit
 ```js
 import config from "@kriac/eslint-config";
 
-export default config({
-  // ...
-});
+export default config();
 ```
 
 ### stylelint.config.mjs
@@ -41,9 +39,7 @@ export default {
 ```js
 import config from "@kriac/commitlint-config";
 
-export default config({
-  // ...
-});
+export default config();
 ```
 
 ### package.json
@@ -54,8 +50,6 @@ export default config({
 {
   "scripts": {
     "prepare": "husky",
-    "commit": "czg",
-    "lint": "pnpm -r lint",
     "lint:fix": "pnpm lint-staged",
     "lint:es": "eslint --fix",
     "lint:style": "stylelint **/*.{html,vue,css,scss} --fix"
