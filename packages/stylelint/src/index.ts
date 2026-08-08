@@ -4,8 +4,8 @@ const require = createRequire(import.meta.url);
 
 export default {
   extends: [
-    "stylelint-config-recommended-vue",
     "stylelint-config-standard-scss",
+    "stylelint-config-recommended-vue",
     "stylelint-config-recess-order",
   ],
   plugins: ["stylelint-order"],
