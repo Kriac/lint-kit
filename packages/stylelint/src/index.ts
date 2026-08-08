@@ -1,18 +1,20 @@
-import { createRequire } from "node:module";
+import { fileURLToPath } from "node:url";
 
-const require = createRequire(import.meta.url);
+const resolveModule = (specifier: string) => {
+  return fileURLToPath(import.meta.resolve(specifier));
+};
 
 export default {
   extends: [
-    "stylelint-config-standard-scss",
-    "stylelint-config-recommended-vue",
-    "stylelint-config-recess-order",
+    resolveModule("stylelint-config-standard-scss"),
+    resolveModule("stylelint-config-recommended-vue"),
+    resolveModule("stylelint-config-recess-order"),
   ],
-  plugins: ["stylelint-order"],
+  plugins: [resolveModule("stylelint-order")],
   overrides: [
     {
       files: ["**/*.html", "**/*.vue"],
-      customSyntax: require.resolve("postcss-html"),
+      customSyntax: resolveModule("postcss-html"),
     },
   ],
   rules: {

@@ -17,7 +17,7 @@
   "scripts": {
     "lint": "vue-tsc -b --noEmit",
     "build": "tsdown",
-    "release": "npm publish --access public"
+    "release": "pnpm publish --access public"
   },
   "peerDependencies": {
     "eslint": ">=9.0.0"
@@ -25,9 +25,9 @@
   "dependencies": {
     "@eslint/js": "9.39.4",
     "eslint-config-prettier": "10.1.8",
-    "eslint-plugin-perfectionist": "5.9.1",
-    "eslint-plugin-vue": "10.9.2",
-    "typescript-eslint": "8.61.1",
+    "eslint-plugin-perfectionist": "5.10.1",
+    "eslint-plugin-vue": "10.10.0",
+    "typescript-eslint": "8.66.0",
     "vue-eslint-parser": "10.4.0"
   },
   "devDependencies": {
