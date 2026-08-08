@@ -23,9 +23,7 @@
     "release:commit": "pnpm build:commit && pnpm -F @kriac/commitlint-config release"
   },
   "devDependencies": {
-    "@kriac/commitlint-config": "workspace:*",
-    "@kriac/eslint-config": "workspace:*",
-    "@kriac/stylelint-config": "workspace:*",
+    "@kriac/lint-kit": "workspace:*",
     "commitlint": "20.3.0",
     "czg": "1.13.0",
     "eslint": "9.39.4",

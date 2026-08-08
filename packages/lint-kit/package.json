@@ -17,7 +17,10 @@
   "scripts": {
     "lint": "vue-tsc -b --noEmit",
     "build": "tsdown",
-    "release": "npm publish --access public"
+    "release": "pnpm publish --access public"
+  },
+  "engines": {
+    "node": "^22.12.0 || >=24.0.0"
   },
   "peerDependencies": {
     "czg": "^1.0.0",
@@ -25,13 +28,9 @@
     "stylelint": "^17.0.0"
   },
   "dependencies": {
-    "@kriac/commitlint-config": "0.7.0",
-    "@kriac/eslint-config": "0.9.0",
-    "@kriac/stylelint-config": "0.7.0",
-    "stylelint-config-recess-order": "7.7.0",
-    "stylelint-config-recommended-vue": "1.6.1",
-    "stylelint-config-standard-scss": "17.0.0",
-    "stylelint-order": "8.1.1"
+    "@kriac/commitlint-config": "workspace:*",
+    "@kriac/eslint-config": "workspace:*",
+    "@kriac/stylelint-config": "workspace:*"
   },
   "devDependencies": {
     "@types/node": "25.6.0",
