@@ -3,8 +3,8 @@ layout: home
 
 hero:
   name: Lint Kit
-  text: 一套开箱即用的前端工程规范
-  tagline: 为您的项目提供统一、可定制的代码规范
+  text: 一个面向现代前端项目的 Lint 配置包
+  tagline: 几分钟就可以快速统一你的项目代码风格
   actions:
     - theme: brand
       text: 快速开始
@@ -16,17 +16,17 @@ hero:
 features:
   - icon: 🔍
     title: ESLint
-    details: 预配置的 ESLint 规则集，支持 Vue、TypeScript，开箱即用。
+    details: 统一的 ESLint 规则，内置 Vue、TS 解析器。
     link: /guide/eslint
     linkText: 查看配置
   - icon: 🎨
     title: Stylelint
-    details: 统一的 CSS / SCSS 样式规范，支持 Vue 单文件组件。
+    details: 统一的 CSS / SCSS 样式规范，内置 Vue 解析器。
     link: /guide/stylelint
     linkText: 查看配置
   - icon: 📝
     title: Commitlint
-    details: 规范化 Git 提交信息，内置 czg 交互式提交支持。
+    details: 统一的 Git 提交信息，内置 czg 交互式提交配置。
     link: /guide/commitlint
     linkText: 查看配置
 ---
