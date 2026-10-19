@@ -54,11 +54,6 @@ export default config();
     "lint:es": "eslint --fix",
     "lint:style": "stylelint **/*.{html,vue,css,scss} --fix"
   },
-  "config": {
-    "commitizen": {
-      "czConfig": "commitlint.config.mjs"
-    }
-  },
   "lint-staged": {
     "*.vue": ["eslint --fix", "stylelint --fix", "prettier --write"],
     "*.{js,ts,jsx,tsx}": ["eslint --fix", "prettier --write"],

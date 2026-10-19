@@ -26,7 +26,7 @@ features:
     linkText: 查看配置
   - icon: 📝
     title: Commitlint
-    details: 统一的 Git 提交信息，内置 czg 交互式提交配置。
+    details: 统一的 Git 提交校验规则，内置 Conventional Commits 约定。
     link: /guide/commitlint
     linkText: 查看配置
 ---

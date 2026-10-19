@@ -3,7 +3,6 @@
   "packageManager": "pnpm@10.25.0",
   "scripts": {
     "prepare": "husky",
-    "commit": "czg",
     "format": "prettier --write .",
     "lint": "pnpm -r lint",
     "lint:es": "eslint --fix",
@@ -24,19 +23,14 @@
   },
   "devDependencies": {
     "@kriac/lint-kit": "workspace:*",
+    "@types/node": "25.6.0",
     "commitlint": "20.3.0",
-    "czg": "1.13.0",
     "eslint": "9.39.4",
     "husky": "9.1.7",
     "lint-staged": "16.4.0",
     "prettier": "3.7.2",
     "stylelint": "17.12.0",
     "typescript": "5.8.2"
-  },
-  "config": {
-    "commitizen": {
-      "czConfig": "commitlint.config.mjs"
-    }
   },
   "lint-staged": {
     "*.vue": [

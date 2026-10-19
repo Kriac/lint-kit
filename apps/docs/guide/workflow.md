@@ -2,10 +2,10 @@
 
 ## 安装依赖（建议固定版本）
 
-首先您需要安装 husky、lint-staged、prettier 和 czg：
+首先您需要安装 husky、lint-staged 和 prettier：
 
 ```bash
-pnpm i -D prettier@3.7.2 lint-staged@16.4.0 husky@9.1.7 czg@1.13.0
+pnpm i -D prettier@3.7.2 lint-staged@16.4.0 husky@9.1.7
 ```
 
 ## 配置 lint-staged 与 prettier
@@ -70,19 +70,3 @@ pnpm lint && pnpm lint-staged
 
 - 运行 `pnpm lint` 进行全局 lint 检查
 - 运行 `pnpm lint-staged` 对暂存的文件进行格式化和修复
-
-## 配置 czg 与 commitizen
-
-czg 是 commitizen 的轻量级替代方案，同时支持交互式地生成规范化的提交消息。
-
-在 `package.json` 中配置地址：
-
-```json
-{
-  "config": {
-    "commitizen": {
-      "czConfig": "commitlint.config.mjs"
-    }
-  }
-}
-```
