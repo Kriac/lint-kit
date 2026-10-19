@@ -1,6 +1,6 @@
 # Commitlint 配置
 
-`@kriac/commitlint-config` 提供了统一的提交信息规范配置，同时使用 `czg` 工具可以实现交互式的 commit 信息流程。
+`@kriac/commitlint-config` 提供了统一的提交信息规范配置，用于校验 Git 提交信息。
 
 内置配置包括：
 
@@ -15,19 +15,6 @@ import config from "@kriac/commitlint-config";
 
 export default config({
   // ...
-});
-```
-
-### 自定义 scope
-
-```js
-import config from "@kriac/commitlint-config";
-
-export default config({
-  scopes: [
-    { name: "docs: 文档", value: "docs" },
-    { name: "demo: 示例应用", value: "demo" },
-  ],
 });
 ```
 
@@ -46,15 +33,21 @@ export default config({
 
 ## 选项
 
-### `scopes`
+配置仅用于提交信息校验，不再提供交互式提交功能。原 `scopes` 选项已移除；如需限制提交范围，请配置 `scope-enum` 规则：
 
-- 类型：`{ name: string; value: string }[]`
-- 默认值：`[]`
-- 说明：扩展可选的提交范围列表。
+```js
+import config from "@kriac/commitlint-config";
+
+export default config({
+  rules: {
+    "scope-enum": [2, "always", ["docs", "demo"]],
+  },
+});
+```
 
 ### `rules`
 
-- 类型：`UserConfig["rules"]`
+- 类型：`UserConfig["rules"]`（来自 `@commitlint/types`）
 - 默认值：`{}`
 - 说明：扩展或覆盖默认的 commitlint 规则。
 
@@ -62,10 +55,3 @@ export default config({
 
 - `type-empty`: 必须填写提交类型
 - `type-enum`: 提交类型必须在内置枚举范围内
-
-## 跳过问题
-
-- `body`
-- `breaking`
-- `footerPrefix`
-- `footer`

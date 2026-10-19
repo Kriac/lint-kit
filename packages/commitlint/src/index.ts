@@ -1,34 +1,33 @@
+import type { UserConfig } from "@commitlint/types";
 import type { PluginOptions } from "./types";
-import { defineConfig } from "czg";
-import { types } from "./modules/czg-config";
 
-export default function (opts?: PluginOptions) {
-  const { scopes = [], rules = {} } = opts || {};
-
-  return defineConfig({
-    // 提交类型
-    types,
-
-    // 所属业务域
-    scopes,
-
-    // 配置 cli 跳过的问题
-    skipQuestions: ["body", "breaking", "footerPrefix", "footer"],
-
-    // 自定义规则
+/**
+ * 创建提交信息校验配置
+ */
+export default function (opts?: PluginOptions): UserConfig {
+  const { rules = {} } = opts || {};
+  return {
     rules: {
-      // 每次提交必须要包含提交类型
+      // 校验提交类型不能为空
       "type-empty": [2, "never"],
-      // 提交的类型必须符合系统预设
+      // 校验提交类型必须符合 Conventional Commits 规范
       "type-enum": [
         2,
         "always",
-        types.map((item) => {
-          return item.value;
-        }),
+        [
+          "feat",
+          "fix",
+          "style",
+          "refactor",
+          "perf",
+          "test",
+          "ci",
+          "docs",
+          "chore",
+          "revert",
+        ],
       ],
-
       ...rules,
     },
-  });
+  };
 }
