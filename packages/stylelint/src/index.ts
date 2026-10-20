@@ -26,7 +26,7 @@ export default {
     "selector-class-pattern": null,
     // 关闭重复选择器校验，部分情况下可以更好的维护代码
     "no-duplicate-selectors": null,
-    // 关闭字体兜底校验，字体图标不能兜底
+    // 关闭字体兜底校验，字体图标可能没有指定通用字体
     "font-family-no-missing-generic-family-keyword": null,
   },
 };
