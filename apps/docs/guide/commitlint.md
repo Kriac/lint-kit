@@ -40,7 +40,7 @@ import config from "@kriac/commitlint-config";
 
 export default config({
   rules: {
-    "scope-enum": [2, "always", ["docs", "demo"]],
+    "scope-enum": [2, "always", ["docs"]],
   },
 });
 ```
