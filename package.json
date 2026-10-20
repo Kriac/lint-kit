@@ -9,6 +9,7 @@
     "lint:style": "stylelint **/*.{vue,css,scss} --fix",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:commit": "vitest run packages/commitlint",
     "dev:docs": "pnpm -F @kriac/lint-kit-docs dev",
     "dev:demo": "pnpm -F @kriac/lint-kit-demo dev",
     "build": "pnpm -r build",
