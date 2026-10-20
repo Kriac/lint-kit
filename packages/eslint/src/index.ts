@@ -35,7 +35,7 @@ export default function (opts?: PluginOptions) {
       },
     },
 
-    // 排序最佳实践
+    // 排序规则
     perfectionistConfig,
 
     // 格式化风格
@@ -49,7 +49,6 @@ export default function (opts?: PluginOptions) {
         "arrow-body-style": ["error", "always"],
         // 统一区分普通导入和类型导入
         "@typescript-eslint/consistent-type-imports": "error",
-
         // 关闭全局变量校验，交由 tsc 类型校验
         "no-undef": "off",
         // 关闭 vue 模板根节点校验，部分工具可能需要 vue sfc 但它没有子节点
