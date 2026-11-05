@@ -22,6 +22,9 @@ describe("init 辅助函数", () => {
     vi.spyOn(output, "info").mockImplementation(() => {
       return undefined;
     });
+    vi.spyOn(output, "warn").mockImplementation(() => {
+      return undefined;
+    });
   });
 
   afterEach(async () => {
@@ -44,12 +47,125 @@ describe("init 辅助函数", () => {
     expect(await readFile(join(cwd, "eslint.config.mjs"), "utf8")).toBe(
       "existing",
     );
-    expect(output.info).toHaveBeenCalledExactlyOnceWith(
-      "已存在 eslint.config.mjs",
+    expect(output.success).toHaveBeenNthCalledWith(
+      1,
+      "已配置 eslint.config.mjs",
     );
-    expect(output.success).toHaveBeenCalledExactlyOnceWith(
+    expect(output.success).toHaveBeenNthCalledWith(
+      2,
       "已生成 stylelint.config.mjs",
     );
+  });
+
+  it.each([
+    { file: ".prettierrc", contents: '{"singleQuote":true}' },
+    { file: ".prettierrc.toml", contents: "singleQuote = true\n" },
+    { file: "package.json", contents: '{"prettier":{"singleQuote":true}}' },
+    { file: ".prettierrc.cjs", contents: 'throw new Error("不应执行配置");\n' },
+  ])(
+    "已有其他 Prettier 配置 $file 时仍生成标准配置",
+    async ({ file, contents }) => {
+      await writeFile(join(cwd, file), contents);
+
+      await writeLinterConfigs(cwd, ["prettier"]);
+
+      expect(await readFile(join(cwd, file), "utf8")).toBe(contents);
+      expect(await readFile(join(cwd, "prettier.config.mjs"), "utf8")).toBe(
+        "export default {};\n",
+      );
+      expect(output.success).toHaveBeenCalledExactlyOnceWith(
+        "已生成 prettier.config.mjs",
+      );
+    },
+  );
+
+  it("不覆盖已有的标准 Prettier 配置", async () => {
+    const contents = "export default { semi: false };\n";
+    await writeFile(join(cwd, "prettier.config.mjs"), contents);
+
+    await writeLinterConfigs(cwd, ["prettier"]);
+
+    expect(await readFile(join(cwd, "prettier.config.mjs"), "utf8")).toBe(
+      contents,
+    );
+    expect(output.success).toHaveBeenCalledExactlyOnceWith(
+      "已配置 prettier.config.mjs",
+    );
+  });
+
+  it("父目录有 Prettier 配置时仍在项目目录生成标准配置", async () => {
+    const project = join(cwd, "project");
+    await mkdir(project);
+    await writeFile(join(cwd, ".prettierrc"), '{"singleQuote":true}');
+
+    await writeLinterConfigs(project, ["prettier"]);
+
+    expect(await readFile(join(project, "prettier.config.mjs"), "utf8")).toBe(
+      "export default {};\n",
+    );
+    expect(output.success).toHaveBeenCalledExactlyOnceWith(
+      "已生成 prettier.config.mjs",
+    );
+  });
+
+  it("合并 Prettier 插件配置并保留已有设置和推荐", async () => {
+    await mkdir(directory);
+    await writeFile(
+      join(directory, "settings.json"),
+      '{ "editor.codeActionsOnSave": { "source.organizeImports": "explicit" }, "other": true }',
+    );
+    await writeFile(
+      join(directory, "extensions.json"),
+      '{ "recommendations": ["ESBENP.PRETTIER-VSCODE", "user.extension"] }',
+    );
+
+    await writeVscodeConfig(cwd, ["prettier"]);
+
+    const settingsText = await readFile(
+      join(directory, "settings.json"),
+      "utf8",
+    );
+    const extensionsText = await readFile(
+      join(directory, "extensions.json"),
+      "utf8",
+    );
+    expect(parse(settingsText)).toEqual({
+      "editor.codeActionsOnSave": { "source.organizeImports": "explicit" },
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "editor.formatOnSave": true,
+      other: true,
+      "prettier.prettierPath":
+        "node_modules/@kriac/lint-kit/node_modules/prettier",
+    });
+    expect(parse(extensionsText)).toEqual({
+      recommendations: ["ESBENP.PRETTIER-VSCODE", "user.extension"],
+    });
+    expect(output.warn).not.toHaveBeenCalled();
+    await writeVscodeConfig(cwd, ["prettier"]);
+    expect(await readFile(join(directory, "settings.json"), "utf8")).toBe(
+      settingsText,
+    );
+    expect(await readFile(join(directory, "extensions.json"), "utf8")).toBe(
+      extensionsText,
+    );
+  });
+
+  it("写入固定的 Prettier 路径并覆盖已有值", async () => {
+    await mkdir(directory);
+    await writeFile(
+      join(directory, "settings.json"),
+      '{ "prettier.prettierPath": "custom/prettier" }',
+    );
+
+    await writeVscodeConfig(cwd, ["prettier"]);
+
+    const settings = parse<Record<string, unknown>>(
+      await readFile(join(directory, "settings.json"), "utf8"),
+    );
+    expect(settings["prettier.prettierPath"]).toBe(
+      "node_modules/@kriac/lint-kit/node_modules/prettier",
+    );
+    expect(output.warn).not.toHaveBeenCalled();
   });
 
   it("为两个插件生成排序后的设置和推荐", async () => {

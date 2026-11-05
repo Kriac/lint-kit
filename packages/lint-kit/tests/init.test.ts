@@ -53,11 +53,12 @@ describe("init 命令", () => {
       1,
       expect.objectContaining({
         options: [
+          { value: "prettier", label: "Prettier" },
           { value: "eslint", label: "ESLint" },
           { value: "stylelint", label: "Stylelint" },
           { value: "commitlint", label: "Commitlint" },
         ],
-        initialValues: ["eslint", "stylelint", "commitlint"],
+        initialValues: ["prettier", "eslint", "stylelint", "commitlint"],
         required: false,
       }),
     );
@@ -101,6 +102,40 @@ describe("init 命令", () => {
     expect(await readdir(cwd)).toEqual(["stylelint.config.mjs"]);
   });
 
+  it("选择 Prettier 时生成配置并提供 Prettier 插件集成", async () => {
+    vi.mocked(multiselect)
+      .mockResolvedValueOnce(["prettier"])
+      .mockResolvedValueOnce(["prettier"]);
+
+    await init({ cwd });
+
+    expect(multiselect).toHaveBeenNthCalledWith(
+      2,
+      expect.objectContaining({
+        options: [{ label: "Prettier", value: "prettier" }],
+        initialValues: ["prettier"],
+      }),
+    );
+    expect(await readFile(join(cwd, "prettier.config.mjs"), "utf8")).toBe(
+      "export default {};\n",
+    );
+    const settings = JSON.parse(
+      await readFile(join(cwd, ".vscode", "settings.json"), "utf8"),
+    );
+    const extensions = JSON.parse(
+      await readFile(join(cwd, ".vscode", "extensions.json"), "utf8"),
+    );
+    expect(settings).toEqual({
+      "editor.codeActionsOnSave": {},
+      "editor.defaultFormatter": "esbenp.prettier-vscode",
+      "editor.formatOnSave": true,
+      "prettier.prettierPath":
+        "node_modules/@kriac/lint-kit/node_modules/prettier",
+    });
+    expect(extensions.recommendations).toEqual(["esbenp.prettier-vscode"]);
+    expect(output.warn).not.toHaveBeenCalled();
+  });
+
   it("不覆盖已有配置并继续生成其他文件", async () => {
     await writeFile(join(cwd, "eslint.config.mjs"), "existing");
     vi.mocked(multiselect).mockResolvedValueOnce(["eslint", "stylelint"]);
@@ -111,16 +146,18 @@ describe("init 命令", () => {
       "existing",
     );
     expect(await readdir(cwd)).toContain("stylelint.config.mjs");
-    expect(output.success).toHaveBeenCalledExactlyOnceWith(
-      "已生成 stylelint.config.mjs",
+    expect(output.success).toHaveBeenNthCalledWith(
+      1,
+      "已配置 eslint.config.mjs",
     );
-    expect(output.info).toHaveBeenCalledExactlyOnceWith(
-      "已存在 eslint.config.mjs",
+    expect(output.success).toHaveBeenNthCalledWith(
+      2,
+      "已生成 stylelint.config.mjs",
     );
     expect(output.warn).not.toHaveBeenCalled();
   });
 
-  it("所有工具配置已存在时逐个输出 info", async () => {
+  it("所有工具配置已存在时逐个输出配置状态", async () => {
     await writeFile(join(cwd, "eslint.config.mjs"), "existing eslint");
     await writeFile(join(cwd, "stylelint.config.mjs"), "existing stylelint");
     vi.mocked(multiselect).mockResolvedValueOnce(["eslint", "stylelint"]);
@@ -133,12 +170,14 @@ describe("init 命令", () => {
     expect(await readFile(join(cwd, "stylelint.config.mjs"), "utf8")).toBe(
       "existing stylelint",
     );
-    expect(output.success).not.toHaveBeenCalled();
-    expect(output.info).toHaveBeenCalledTimes(2);
-    expect(output.info).toHaveBeenNthCalledWith(1, "已存在 eslint.config.mjs");
-    expect(output.info).toHaveBeenNthCalledWith(
+    expect(output.success).toHaveBeenCalledTimes(2);
+    expect(output.success).toHaveBeenNthCalledWith(
+      1,
+      "已配置 eslint.config.mjs",
+    );
+    expect(output.success).toHaveBeenNthCalledWith(
       2,
-      "已存在 stylelint.config.mjs",
+      "已配置 stylelint.config.mjs",
     );
     expect(output.warn).not.toHaveBeenCalled();
   });
@@ -156,6 +195,10 @@ describe("init 命令", () => {
   });
 
   it.each([
+    {
+      selection: ["prettier"],
+      expected: ["esbenp.prettier-vscode"],
+    },
     {
       selection: ["eslint"],
       expected: ["dbaeumer.vscode-eslint"],
@@ -181,10 +224,11 @@ describe("init 命令", () => {
         2,
         expect.objectContaining({
           options: [
+            { label: "Prettier", value: "prettier" },
             { label: "ESLint", value: "eslint" },
             { label: "Stylelint", value: "stylelint" },
           ],
-          initialValues: ["eslint", "stylelint"],
+          initialValues: ["prettier", "eslint", "stylelint"],
           required: false,
         }),
       );
@@ -198,6 +242,9 @@ describe("init 命令", () => {
       expect(extensions.recommendations).toEqual(expected);
       expect(settings["eslint.nodePath"] !== undefined).toBe(
         selection.includes("eslint"),
+      );
+      expect(settings["editor.defaultFormatter"] !== undefined).toBe(
+        selection.includes("prettier"),
       );
       expect(settings["stylelint.stylelintPath"] !== undefined).toBe(
         selection.includes("stylelint"),
@@ -279,20 +326,21 @@ describe("init 命令", () => {
 
     await init({ cwd });
 
-    expect(output.info).toHaveBeenCalledExactlyOnceWith(
-      "已存在 eslint.config.mjs",
-    );
-    expect(output.success).toHaveBeenCalledTimes(3);
+    expect(output.success).toHaveBeenCalledTimes(4);
     expect(output.success).toHaveBeenNthCalledWith(
       1,
-      "已生成 stylelint.config.mjs",
+      "已配置 eslint.config.mjs",
     );
     expect(output.success).toHaveBeenNthCalledWith(
       2,
-      `已更新 ${join(".vscode", "settings.json")}`,
+      "已生成 stylelint.config.mjs",
     );
     expect(output.success).toHaveBeenNthCalledWith(
       3,
+      `已更新 ${join(".vscode", "settings.json")}`,
+    );
+    expect(output.success).toHaveBeenNthCalledWith(
+      4,
       `已更新 ${join(".vscode", "extensions.json")}`,
     );
     expect(await readFile(join(cwd, "eslint.config.mjs"), "utf8")).toBe(

@@ -9,9 +9,11 @@ type JsonObject = Record<string, unknown>;
 /**
  * 支持 VS Code 插件集成的 lint 工具。
  */
-export type VscodeLinter = "eslint" | "stylelint";
+export type VscodeLinter = "eslint" | "prettier" | "stylelint";
 
 const configContents: Record<Linter, string> = {
+  prettier: `export default {};
+`,
   eslint: `import config from "@kriac/lint-kit/eslint";
 
 export default config();
@@ -155,6 +157,12 @@ export async function writeVscodeConfig(cwd: string, selected: VscodeLinter[]) {
   }
   const recommendations: string[] = existingRecommendations ?? [];
 
+  if (selected.includes("prettier")) {
+    settings["editor.defaultFormatter"] = "esbenp.prettier-vscode";
+    settings["prettier.prettierPath"] =
+      "node_modules/@kriac/lint-kit/node_modules/prettier";
+    recommendExtension(recommendations, "esbenp.prettier-vscode");
+  }
   if (selected.includes("eslint")) {
     settings["eslint.nodePath"] = "node_modules/@kriac/lint-kit";
     actions["source.fixAll.eslint"] = "explicit";

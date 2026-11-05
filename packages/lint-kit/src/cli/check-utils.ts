@@ -5,6 +5,10 @@ import { dirname, resolve } from "node:path";
 import { cosmiconfig } from "cosmiconfig";
 import { buildEslintArgs, eslintConfigSearchPlaces } from "./linters/eslint.ts";
 import {
+  buildPrettierArgs,
+  prettierConfigSearchPlaces,
+} from "./linters/prettier.ts";
+import {
   buildStylelintArgs,
   stylelintConfigSearchPlaces,
 } from "./linters/stylelint.ts";
@@ -21,18 +25,29 @@ export interface CheckOptions {
   cwd?: string;
   eslint?: boolean;
   fix?: boolean;
+  prettier?: boolean;
   stylelint?: boolean;
 }
 
 /**
  * check 命令支持的内置 lint 工具。
  */
-export type Linter = "commitlint" | "eslint" | "stylelint";
+export type Linter = "commitlint" | "eslint" | "prettier" | "stylelint";
 
 const require = createRequire(import.meta.url);
-const defaultLinters = ["eslint", "stylelint"] as const;
-const scriptExtensions = ["js", "mjs", "cjs", "ts", "mts", "cts"];
+const defaultLinters = ["prettier", "eslint", "stylelint"] as const;
+const deferredExtensions = [
+  "js",
+  "mjs",
+  "cjs",
+  "ts",
+  "mts",
+  "cts",
+  "json5",
+  "toml",
+];
 const configSearchPlaces: Record<Linter, string[]> = {
+  prettier: prettierConfigSearchPlaces,
   eslint: eslintConfigSearchPlaces,
   stylelint: stylelintConfigSearchPlaces,
   commitlint: commitlintConfigSearchPlaces,
@@ -68,9 +83,9 @@ export async function findConfigPath(
   linter: Linter,
   cwd: string,
 ): Promise<string | undefined> {
-  // 配置仅在内置 CLI 中执行，避免发现阶段重复运行用户的 JS/TS 配置。
-  const scriptLoaders = Object.fromEntries(
-    scriptExtensions.map((extension) => {
+  // 脚本及 JSON5/TOML 配置由对应工具加载，发现阶段只确定路径。
+  const deferredLoaders = Object.fromEntries(
+    deferredExtensions.map((extension) => {
       return [
         `.${extension}`,
         () => {
@@ -83,7 +98,7 @@ export async function findConfigPath(
     searchPlaces: configSearchPlaces[linter],
     searchStrategy: "global",
     loaders: {
-      ...scriptLoaders,
+      ...deferredLoaders,
       ".json": (_filepath, content) => {
         return JSON.parse(content.replace(/^\uFEFF/, ""));
       },
@@ -99,12 +114,18 @@ export async function findConfigPath(
  */
 export async function buildLinterArgs(
   linter: Linter,
-  configPath: string,
+  configPath: string | undefined,
   files: string[],
   cwd: string,
   options: CheckOptions,
 ): Promise<string[] | undefined> {
+  if (!configPath) {
+    return undefined;
+  }
+
   switch (linter) {
+    case "prettier":
+      return buildPrettierArgs(files, options.fix === true);
     case "eslint":
       return buildEslintArgs(configPath, files, options.fix === true);
     case "stylelint":
