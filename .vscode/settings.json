@@ -5,5 +5,7 @@
     // "source.fixAll.eslint": "explicit",
     // "source.fixAll.stylelint": "explicit"
   },
-  "stylelint.validate": ["html", "css", "vue", "scss"]
+  "stylelint.stylelintPath": "node_modules/@kriac/lint-kit/node_modules/stylelint",
+  "stylelint.validate": ["html", "css", "vue", "scss"],
+  "stylelint.ignorePath": "${workspaceFolder}/.stylelintignore"
 }
