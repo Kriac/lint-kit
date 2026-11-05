@@ -1,11 +1,11 @@
 {
   "css.validate": false,
-  "eslint.nodePath": "node_modules/@kriac/lint-kit",
   "editor.codeActionsOnSave": {
-    // "source.fixAll.eslint": "explicit",
-    // "source.fixAll.stylelint": "explicit"
+    "source.fixAll.eslint": "explicit",
+    "source.fixAll.stylelint": "explicit"
   },
+  "eslint.nodePath": "node_modules/@kriac/lint-kit",
+  "stylelint.ignorePath": "${workspaceFolder}/.stylelintignore",
   "stylelint.stylelintPath": "node_modules/@kriac/lint-kit/node_modules/stylelint",
-  "stylelint.validate": ["html", "css", "vue", "scss"],
-  "stylelint.ignorePath": "${workspaceFolder}/.stylelintignore"
+  "stylelint.validate": ["html", "css", "vue", "scss"]
 }

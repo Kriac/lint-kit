@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import { cac } from "cac";
+import { init } from "./cli/init.ts";
 import { check } from "./cli/check.ts";
 import { output } from "./cli/output.ts";
 import packageJson from "../package.json" with { type: "json" };
@@ -7,6 +8,11 @@ import packageJson from "../package.json" with { type: "json" };
 const cli = cac("lint-kit");
 
 cli.help().version(packageJson.version);
+
+cli
+  .command("init", "初始化项目配置文件")
+  .option("--cwd <dir>", "指定项目目录")
+  .action(init);
 
 cli
   .command("check [...files]", "根据项目配置文件检查代码风格")
