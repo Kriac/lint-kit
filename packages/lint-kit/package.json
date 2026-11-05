@@ -32,6 +32,7 @@
     "@kriac/stylelint-config": "workspace:*",
     "cac": "7.1.0",
     "commitlint": "20.3.0",
+    "comment-json": "5.0.0",
     "cosmiconfig": "9.0.2",
     "eslint": "9.39.4",
     "picocolors": "1.1.1",

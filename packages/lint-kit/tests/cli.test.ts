@@ -1,9 +1,14 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { init } from "../src/cli/init.ts";
 import { check } from "../src/cli/check.ts";
 import { output } from "../src/cli/output.ts";
 
 vi.mock(import("../src/cli/check.ts"), () => {
   return { check: vi.fn() };
+});
+
+vi.mock(import("../src/cli/init.ts"), () => {
+  return { init: vi.fn() };
 });
 
 vi.mock(import("../src/cli/output.ts"), async (importOriginal) => {
@@ -68,6 +73,17 @@ describe("CLI 入口", () => {
     expect(check).toHaveBeenCalledTimes(1);
     expect(output.error).not.toHaveBeenCalled();
     expect(process.exitCode).toBe(2);
+  });
+
+  it("将 init 及其目录选项交给初始化命令", async () => {
+    process.argv = [process.execPath, "lint-kit", "init", "--cwd", "project"];
+
+    await import("../src/cli.ts");
+
+    expect(init).toHaveBeenCalledExactlyOnceWith(
+      expect.objectContaining({ cwd: "project" }),
+    );
+    expect(check).not.toHaveBeenCalled();
   });
 
   it("显示帮助时不执行命令", async () => {

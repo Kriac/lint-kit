@@ -110,6 +110,9 @@ importers:
       cac:
         specifier: 7.1.0
         version: 7.1.0
+      comment-json:
+        specifier: 5.0.0
+        version: 5.0.0
       commitlint:
         specifier: 20.3.0
         version: 20.3.0(@types/node@25.6.0)(conventional-commits-parser@6.4.0)(typescript@5.8.2)
@@ -1987,6 +1990,12 @@ packages:
         integrity: sha512-c5AMf34bKdvPhQ7tBGhqkgKNUzMr4WUs+WDtC2ZUGOUncbxKMTvqxYctiseW3+L4bA8ec+GcZ6/A/FW4m8ukng==,
       }
 
+  array-timsort@1.0.3:
+    resolution:
+      {
+        integrity: sha512-/+3GRL7dDAGEfM6TseQk/U+mi18TU2Ms9I3UlLdUMhz2hbvGNTKdj9xniwXfUqgYhHxRx0+8UnKkvlNwVU+cWQ==,
+      }
+
   assertion-error@2.0.1:
     resolution:
       {
@@ -2169,6 +2178,13 @@ packages:
         integrity: sha512-H+y0Jo/T1RZ9qPP4Eh1pkcQcLRglraJaSLoyOtHxu6AapkjWVCy2Sit1QQ4x3Dng8qDlSsZEet7g5Pq06MvTgw==,
       }
     engines: { node: ">=20" }
+
+  comment-json@5.0.0:
+    resolution:
+      {
+        integrity: sha512-uiqLcOiVDJtBP8WGkZHEP+FZIhTzP1dxvn59EfoYUi9gqupjrBWVQkO2atDrbnKPwLeotFYDsuNb26uBMqB+hw==,
+      }
+    engines: { node: ">= 6" }
 
   commitlint@20.3.0:
     resolution:
@@ -2548,6 +2564,14 @@ packages:
         integrity: sha512-7p3DrVEIopW1B1avAGLuCSh1jubc01H2JHc8B4qqGblmg5gI9yumBgACjWo4JlIc04ufug4xJ3SQI8HkS/Rgzw==,
       }
     engines: { node: ^20.19.0 || ^22.13.0 || >=24 }
+
+  esprima@4.0.1:
+    resolution:
+      {
+        integrity: sha512-eGuFFw7Upda+g4p+QHvnW0RyTX/SVeJBDM/gCtMARO0cLuT2HcEKnTPvhjV6aGeqrCB/sbNop0Kszm0jsaWU4A==,
+      }
+    engines: { node: ">=4" }
+    hasBin: true
 
   esquery@1.7.0:
     resolution:
@@ -5678,6 +5702,8 @@ snapshots:
 
   array-ify@1.0.0: {}
 
+  array-timsort@1.0.3: {}
+
   assertion-error@2.0.1: {}
 
   ast-kit@3.0.0:
@@ -5764,6 +5790,11 @@ snapshots:
   comma-separated-tokens@2.0.3: {}
 
   commander@14.0.3: {}
+
+  comment-json@5.0.0:
+    dependencies:
+      array-timsort: 1.0.3
+      esprima: 4.0.1
 
   commitlint@20.3.0(@types/node@25.6.0)(conventional-commits-parser@6.4.0)(typescript@5.8.2):
     dependencies:
@@ -6016,6 +6047,8 @@ snapshots:
       acorn: 8.19.0
       acorn-jsx: 5.3.2(acorn@8.19.0)
       eslint-visitor-keys: 5.0.1
+
+  esprima@4.0.1: {}
 
   esquery@1.7.0:
     dependencies:
