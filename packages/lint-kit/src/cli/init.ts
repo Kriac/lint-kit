@@ -14,11 +14,13 @@ export interface InitOptions {
 }
 
 const linterOptions: { label: string; value: Linter }[] = [
+  { label: "Prettier", value: "prettier" },
   { label: "ESLint", value: "eslint" },
   { label: "Stylelint", value: "stylelint" },
   { label: "Commitlint", value: "commitlint" },
 ];
 const vscodeOptions: { label: string; value: VscodeLinter }[] = [
+  { label: "Prettier", value: "prettier" },
   { label: "ESLint", value: "eslint" },
   { label: "Stylelint", value: "stylelint" },
 ];

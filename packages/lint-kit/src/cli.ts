@@ -18,6 +18,7 @@ cli
   .command("check [...files]", "根据项目配置文件检查代码风格")
   .option("--cwd <dir>", "指定项目目录")
   .option("--fix", "自动修复问题")
+  .option("--prettier", "检查 Prettier")
   .option("--eslint", "检查 ESLint")
   .option("--stylelint", "检查 Stylelint")
   .option("--commitlint <file>", "校验指定文件中的提交信息")

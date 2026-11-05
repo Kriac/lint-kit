@@ -50,16 +50,22 @@ describe("check 命令", () => {
     process.exitCode = originalExitCode;
   });
 
-  it("默认依次执行 ESLint 和 Stylelint，保留最高退出码", async () => {
+  it("默认依次执行 Prettier、ESLint 和 Stylelint，保留最高退出码", async () => {
     vi.mocked(spawn).mockImplementationOnce(() => {
       return mockChildExit(2);
     });
 
     await check();
 
-    expect(spawn).toHaveBeenCalledTimes(2);
+    expect(spawn).toHaveBeenCalledTimes(3);
     expect(spawn).toHaveBeenNthCalledWith(
       1,
+      process.execPath,
+      [await resolveBinaryPath("prettier"), "--check", "--", "."],
+      { cwd, stdio: ["ignore", "inherit", "inherit"] },
+    );
+    expect(spawn).toHaveBeenNthCalledWith(
+      2,
       process.execPath,
       [
         await resolveBinaryPath("eslint"),
@@ -71,7 +77,7 @@ describe("check 命令", () => {
       { cwd, stdio: ["ignore", "inherit", "inherit"] },
     );
     expect(spawn).toHaveBeenNthCalledWith(
-      2,
+      3,
       process.execPath,
       [
         await resolveBinaryPath("stylelint"),
@@ -85,7 +91,7 @@ describe("check 命令", () => {
     );
     expect(process.exitCode).toBe(2);
     expect(process.stderr.write).toHaveBeenCalledExactlyOnceWith(
-      expect.stringMatching(/✖.*检查结束，耗时 /),
+      expect.stringMatching(/✖.*检查完成，总共耗时 /),
     );
     expect(process.stdout.write).not.toHaveBeenCalledWith(
       expect.stringContaining("检查结束"),
@@ -97,6 +103,11 @@ describe("check 命令", () => {
       options: { eslint: true, cwd: ".", fix: true },
       linter: "eslint",
       args: ["--fix", "--", "src"],
+    },
+    {
+      options: { prettier: true, fix: true },
+      linter: "prettier",
+      args: ["--write", "--", "src"],
     },
     {
       options: { commitlint: "message.txt" },
@@ -113,8 +124,9 @@ describe("check 命令", () => {
         process.execPath,
         [
           await resolveBinaryPath(linter),
-          "--config",
-          resolve(cwd, `${linter}.config.js`),
+          ...(linter === "prettier"
+            ? []
+            : ["--config", resolve(cwd, `${linter}.config.js`)]),
           ...args,
         ],
         { cwd, stdio: ["ignore", "inherit", "inherit"] },
@@ -123,60 +135,121 @@ describe("check 命令", () => {
     },
   );
 
+  it("显式选择全部工具时最后执行 Commitlint", async () => {
+    await check([], {
+      prettier: true,
+      eslint: true,
+      stylelint: true,
+      commitlint: "message.txt",
+    });
+
+    const linters: Linter[] = ["prettier", "eslint", "stylelint", "commitlint"];
+    for (const [index, linter] of linters.entries()) {
+      expect(spawn).toHaveBeenNthCalledWith(
+        index + 1,
+        process.execPath,
+        expect.arrayContaining([await resolveBinaryPath(linter)]),
+        { cwd, stdio: ["ignore", "inherit", "inherit"] },
+      );
+    }
+  });
+
   it("缺少配置时跳过该工具，继续执行其他工具", async () => {
-    vi.mocked(findConfigPath).mockResolvedValueOnce(undefined);
+    vi.mocked(findConfigPath).mockImplementation(async (linter) => {
+      return linter === "stylelint"
+        ? resolve(cwd, "stylelint.config.js")
+        : undefined;
+    });
 
     await check();
 
-    expect(findConfigPath).toHaveBeenCalledTimes(2);
+    expect(findConfigPath).toHaveBeenCalledTimes(3);
     expect(spawn).toHaveBeenCalledTimes(1);
+    expect(spawn).toHaveBeenNthCalledWith(
+      1,
+      process.execPath,
+      [
+        await resolveBinaryPath("stylelint"),
+        "--config",
+        resolve(cwd, "stylelint.config.js"),
+        "--allow-empty-input",
+        "--",
+        stylePattern,
+      ],
+      { cwd, stdio: ["ignore", "inherit", "inherit"] },
+    );
     expect(process.exitCode).toBe(0);
     expect(process.stdout.write).not.toHaveBeenCalledWith(
       expect.stringContaining("ESLint"),
     );
   });
 
-  it("禁用 ESLint 且目标只有已存在的非样式文件时不启动进程", async () => {
+  it("禁用 ESLint 且目标只有非样式文件时仍执行 Prettier", async () => {
     await check([import.meta.filename], { eslint: false });
 
-    expect(findConfigPath).toHaveBeenCalledExactlyOnceWith("stylelint", cwd);
-    expect(spawn).not.toHaveBeenCalled();
+    expect(findConfigPath).toHaveBeenCalledTimes(2);
+    expect(findConfigPath).toHaveBeenNthCalledWith(1, "prettier", cwd);
+    expect(findConfigPath).toHaveBeenNthCalledWith(2, "stylelint", cwd);
+    expect(spawn).toHaveBeenCalledExactlyOnceWith(
+      process.execPath,
+      [
+        await resolveBinaryPath("prettier"),
+        "--check",
+        "--",
+        import.meta.filename,
+      ],
+      { cwd, stdio: ["ignore", "inherit", "inherit"] },
+    );
     expect(process.exitCode).toBe(0);
-    expect(process.stdout.write).toHaveBeenCalledTimes(1);
-    expect(process.stdout.write).toHaveBeenCalledWith(
-      expect.stringMatching(/✔.*检查结束，耗时 /),
+    expect(process.stdout.write).toHaveBeenCalledTimes(2);
+    expect(process.stdout.write).toHaveBeenLastCalledWith(
+      expect.stringMatching(/✔.*检查完成，总共耗时 /),
     );
     expect(process.stderr.write).not.toHaveBeenCalled();
   });
 
-  it("所有工具缺少配置时也输出检查结束和耗时", async () => {
+  it("所有工具缺少配置时均跳过", async () => {
     vi.mocked(findConfigPath).mockResolvedValue(undefined);
 
     await check();
 
     expect(spawn).not.toHaveBeenCalled();
     expect(process.exitCode).toBe(0);
-    expect(process.stdout.write).toHaveBeenCalledExactlyOnceWith(
-      expect.stringMatching(/✔.*检查结束，耗时 /),
+    expect(process.stdout.write).toHaveBeenLastCalledWith(
+      expect.stringMatching(/✔.*检查完成，总共耗时 /),
     );
     expect(process.stderr.write).not.toHaveBeenCalled();
   });
 
-  it("成功时只输出任务开始信息和总耗时", async () => {
+  it("显式选择 Prettier 但缺少配置时跳过", async () => {
+    vi.mocked(findConfigPath).mockResolvedValue(undefined);
+
+    await check(["src"], { prettier: true, fix: true });
+
+    expect(findConfigPath).toHaveBeenCalledExactlyOnceWith("prettier", cwd);
+    expect(spawn).not.toHaveBeenCalled();
+    expect(process.exitCode).toBe(0);
+  });
+
+  it("成功时按顺序输出各任务开始信息和总耗时", async () => {
     await check();
 
-    expect(process.stdout.write).toHaveBeenCalledTimes(3);
+    expect(process.stdout.write).toHaveBeenCalledTimes(4);
     expect(process.stdout.write).toHaveBeenNthCalledWith(
       1,
-      expect.stringContaining("正在检查 ESLint"),
+      expect.stringContaining("正在执行 Prettier"),
     );
     expect(process.stdout.write).toHaveBeenNthCalledWith(
       2,
-      expect.stringContaining("正在检查 Stylelint"),
+      expect.stringContaining("正在执行 ESLint"),
     );
     expect(process.stdout.write).toHaveBeenNthCalledWith(
       3,
-      expect.stringMatching(/✔.*检查结束，耗时 /),
+      expect.stringContaining("正在执行 Stylelint"),
+    );
+    expect(process.stdout.write).toHaveBeenNthCalledWith(
+      4,
+      expect.stringMatching(/✔.*检查完成，总共耗时 /),
     );
     expect(process.stderr.write).not.toHaveBeenCalled();
   });
@@ -221,7 +294,7 @@ describe("check 命令", () => {
     await check([], { eslint: true });
 
     expect(process.stderr.write).toHaveBeenCalledExactlyOnceWith(
-      `\u001b[31m✖\u001b[39m 检查结束，耗时 ${expected}\n`,
+      `\u001b[31m✖\u001b[39m 检查完成，总共耗时 ${expected}\n`,
     );
     expect(green).not.toHaveBeenCalled();
     expect(yellow).not.toHaveBeenCalled();
@@ -237,7 +310,7 @@ describe("check 命令", () => {
 
     expect(process.exitCode).toBe(1);
     expect(process.stderr.write).toHaveBeenCalledExactlyOnceWith(
-      expect.stringMatching(/✖.*检查结束，耗时 /),
+      expect.stringMatching(/✖.*检查完成，总共耗时 /),
     );
   });
 
@@ -251,7 +324,7 @@ describe("check 命令", () => {
       return child as ReturnType<typeof spawn>;
     });
 
-    await expect(check([], { eslint: true })).rejects.toBe(error);
+    await expect(check([], { prettier: true })).rejects.toBe(error);
     expect(process.stderr.write).not.toHaveBeenCalled();
     expect(process.stdout.write).not.toHaveBeenCalledWith(
       expect.stringContaining("检查结束"),
@@ -260,7 +333,7 @@ describe("check 命令", () => {
 
   it("项目目录不是文件夹时拒绝执行", async () => {
     await expect(check([], { cwd: import.meta.filename })).rejects.toThrow(
-      "项目目录不是文件夹",
+      "不是一个目录",
     );
     expect(findConfigPath).not.toHaveBeenCalled();
     expect(spawn).not.toHaveBeenCalled();

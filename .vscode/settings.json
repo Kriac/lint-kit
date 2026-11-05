@@ -4,7 +4,9 @@
     "source.fixAll.eslint": "explicit",
     "source.fixAll.stylelint": "explicit"
   },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
   "eslint.nodePath": "node_modules/@kriac/lint-kit",
+  "prettier.prettierPath": "node_modules/@kriac/lint-kit/node_modules/prettier",
   "stylelint.ignorePath": "${workspaceFolder}/.stylelintignore",
   "stylelint.stylelintPath": "node_modules/@kriac/lint-kit/node_modules/stylelint",
   "stylelint.validate": ["html", "css", "vue", "scss"]

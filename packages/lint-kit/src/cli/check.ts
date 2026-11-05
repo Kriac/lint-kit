@@ -11,6 +11,7 @@ import {
 
 const linterNames: Record<Linter, string> = {
   eslint: "ESLint",
+  prettier: "Prettier",
   stylelint: "Stylelint",
   commitlint: "Commitlint",
 };
@@ -29,9 +30,6 @@ export async function check(files: string[] = [], options: CheckOptions = {}) {
 
     for (const linter of selectLinters(options)) {
       const configPath = await findConfigPath(linter, cwd);
-      if (!configPath) {
-        continue;
-      }
       const args = await buildLinterArgs(
         linter,
         configPath,
