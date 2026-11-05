@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import { cac } from "cac";
 import { check } from "./cli/check.ts";
+import { output } from "./cli/output.ts";
 import packageJson from "../package.json" with { type: "json" };
 
 const cli = cac("lint-kit");
@@ -16,4 +17,10 @@ cli
   .option("--commitlint <file>", "校验指定文件中的提交信息")
   .action(check);
 
-cli.parse();
+try {
+  cli.parse(undefined, { run: false });
+  await cli.runMatchedCommand();
+} catch (error) {
+  output.error(error instanceof Error ? error.message : String(error));
+  process.exitCode = 1;
+}
