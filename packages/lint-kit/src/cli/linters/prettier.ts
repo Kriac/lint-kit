@@ -30,6 +30,8 @@ export const prettierConfigSearchPlaces = [
 export function buildPrettierArgs(files: string[], fix: boolean): string[] {
   return [
     fix ? "--write" : "--check",
+    "--log-level",
+    "warn",
     "--",
     ...(files.length > 0 ? files : ["."]),
   ];
