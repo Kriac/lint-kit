@@ -1,17 +1,16 @@
 # Stylelint 配置
 
-`@kriac/stylelint-config` 提供了统一的 CSS / SCSS 样式规范配置，支持 Vue 单文件组件与 HTML 中的样式块，同时集成了属性自动排序规则。
+`@kriac/stylelint-config` 为 CSS、SCSS、Vue 与 HTML 中的样式提供共享规则，并且开箱即用，同时也可以继续使用 Stylelint 原生配置项覆盖规则。
 
-内置配置包括：
+## 快速开始
 
-- `stylelint-config-recommended-vue`
-- `stylelint-config-standard-scss`
-- `stylelint-order`
-- `stylelint-config-recess-order`
+在已有项目中安装配置包与 Stylelint：
 
-## 配置
+```bash
+pnpm add -D @kriac/stylelint-config stylelint
+```
 
-### stylelint.config.mjs
+在项目根目录的 `stylelint.config.mjs` 中启用：
 
 ```js
 export default {
@@ -19,35 +18,24 @@ export default {
 };
 ```
 
-### 扩展 rules
+也可以安装 `@kriac/lint-kit`，运行 `pnpm lint-kit init` 并选择 Stylelint。
+
+## 扩展配置
+
+Stylelint 会将本地 `rules` 与扩展配置合并；本地值用于覆盖对应规则。例如，若项目希望统一类名格式，可以重新启用该规则：
 
 ```js
 export default {
   extends: ["@kriac/stylelint-config"],
-  rules: {},
+  rules: {
+    "selector-class-pattern": "^[a-z][a-z0-9-]+$",
+  },
 };
 ```
 
-### 覆盖特定文件
+## 参考
 
-```js
-export default {
-  extends: ["@kriac/stylelint-config"],
-  overrides: [
-    {
-      files: ["src/theme/**/*.css"],
-      rules: {
-        "selector-class-pattern": "^[a-z][a-z0-9-]+$",
-      },
-    },
-  ],
-};
-```
-
-## 默认关闭的规则
-
-- `no-empty-source`: 兼容没有样式内容的文件
-- `selector-type-no-unknown`: 兼容不同平台或框架的自定义标签
-- `selector-class-pattern`: 不强制约束类名命名风格
-- `no-duplicate-selectors`: 允许部分便于维护的重复选择器写法
-- `font-family-no-missing-generic-family-keyword`: 兼容字体图标等场景
+- [Stylelint 配置指南](https://stylelint.io/user-guide/configure)
+- [Stylelint 规则参考](https://stylelint.io/user-guide/rules)
+- [stylelint-config-standard-scss](https://github.com/stylelint-scss/stylelint-config-standard-scss)
+- [stylelint-config-recess-order](https://github.com/kutsan/stylelint-config-recess-order)

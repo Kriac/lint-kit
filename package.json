@@ -3,8 +3,9 @@
   "packageManager": "pnpm@10.25.0",
   "scripts": {
     "prepare": "husky",
-    "check": "pnpm -r lint && pnpm lint-kit check",
-    "check:fix": "pnpm lint-kit check --fix",
+    "lint": "pnpm -r lint && pnpm lint-kit check",
+    "lint:fix": "pnpm lint-kit check --fix",
+    "lint:staged": "pnpm lint-kit staged",
     "test": "vitest run",
     "dev:docs": "pnpm -F @kriac/lint-kit-docs dev",
     "build": "pnpm -r build",
@@ -27,7 +28,7 @@
     "vitest": "5.0.5"
   },
   "lint-staged": {
-    "*": [
+    "*.{js,mjs,cjs,jsx,ts,mts,cts,tsx,vue,css,scss,less,html,json,jsonc,json5,yaml,yml,md,mdx,graphql,gql}": [
       "lint-kit check --fix"
     ]
   }

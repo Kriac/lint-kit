@@ -1,68 +1,45 @@
-# Lint-Kit 是什么?
+# 快速开始
 
-一个面向现代前端项目的 Lint 配置包，帮助团队统一代码风格、样式规范与 Git 提交信息。
+本节将介绍如何使用 `@kriac/lint-kit` 检查项目代码。
 
 ## 安装
 
-首先您需要在根目录下安装运行时依赖（最好是安装指定的版本）：
+在项目根目录中执行：
 
 ```bash
-pnpm i -D eslint@9.39.4 stylelint@17.8.0 commitlint@20.3.0
+pnpm add -D @kriac/lint-kit
 ```
 
-接下来安装统一的 lint 配置：
-
-```bash
-pnpm i -D @kriac/lint-kit
-```
-
-## 配置
-
-### eslint.config.mjs
-
-```js
-import config from "@kriac/eslint-config";
-
-export default config();
-```
-
-### stylelint.config.mjs
-
-```js
-export default {
-  extends: ["@kriac/stylelint-config"],
-};
-```
-
-### commitlint.config.mjs
-
-```js
-import config from "@kriac/commitlint-config";
-
-export default config();
-```
-
-### package.json
-
-以下是根目录的 `package.json` 配置：
+添加 lint 命令 `package.json`：
 
 ```json
 {
   "scripts": {
-    "prepare": "husky",
-    "lint:fix": "pnpm lint-staged",
-    "lint:es": "eslint --fix",
-    "lint:style": "stylelint **/*.{html,vue,css,scss} --fix"
+    "lint": "lint-kit check",
+    "lint:fix": "lint-kit check --fix",
+    "lint:staged": "lint-kit staged"
   },
   "lint-staged": {
-    "*.vue": ["eslint --fix", "stylelint --fix", "prettier --write"],
-    "*.{js,ts,jsx,tsx}": ["eslint --fix", "prettier --write"],
-    "*.{css,scss}": ["stylelint --fix", "prettier --write"],
-    "*.{json,yaml,md}": ["prettier --write"]
+    "*.{js,mjs,cjs,jsx,ts,mts,cts,tsx,vue,css,scss,less,html,json,jsonc,json5,yaml,yml,md,mdx,graphql,gql}": [
+      "lint-kit check --fix"
+    ]
   }
 }
 ```
 
-## 使用
+然后执行初始化，选择需要的工具和编辑器集成：
 
-如果你在开发过程中遇到了什么问题，或者有更好的建议，欢迎提交 issue 与我们讨论。
+```bash
+pnpm lint-kit init
+```
+
+初始化会创建缺少的配置文件，不会覆盖已有的同名文件。
+
+## 用法
+
+```bash
+pnpm lint-kit check
+pnpm lint-kit check --fix
+```
+
+下一步可阅读 [工作流集成](/guide/workflow) 或查看各工具的 [配置说明](/guide/reference)。

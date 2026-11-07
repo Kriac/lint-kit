@@ -1,35 +1,13 @@
 # 工作流集成
 
-## 安装依赖（建议固定版本）
+推荐使用 husky 为你的项目实现 Git 提交钩子。
 
-首先您需要安装 husky、lint-staged 和 prettier：
+## 安装
 
-```bash
-pnpm i -D prettier@3.7.2 lint-staged@16.4.0 husky@9.1.7
-```
-
-## 配置 lint-staged 与 prettier
-
-lint-staged 只对暂存区中的文件执行格式化和修复，prettier 则用于统一格式化代码。将以下配置添加到 `package.json`：
-
-```json
-{
-  "scripts": {
-    "format": "prettier --write ."
-  },
-  "lint-staged": {
-    "*.vue": ["eslint --fix", "stylelint --fix", "prettier --write"],
-    "*.{js,ts,jsx,tsx}": ["eslint --fix", "prettier --write"],
-    "*.{css,scss}": ["stylelint --fix", "prettier --write"],
-    "*.{json,yaml,md}": ["prettier --write"]
-  }
-}
-```
-
-需要格式化整个项目时，执行：
+在项目根目录中执行：
 
 ```bash
-pnpm format
+pnpm i -D husky
 ```
 
 ## 配置 husky
@@ -54,7 +32,7 @@ pnpm husky install
 
 ```bash
 #!/usr/bin/env sh
-pnpm commitlint --edit "$1"
+pnpm lint-kit check --commitlint "$1"
 ```
 
 ### `.husky/pre-commit`
@@ -63,10 +41,5 @@ pnpm commitlint --edit "$1"
 
 ```bash
 #!/usr/bin/env sh
-pnpm lint && pnpm lint-staged
+pnpm lint:staged
 ```
-
-这个钩子会：
-
-- 运行 `pnpm lint` 进行全局 lint 检查
-- 运行 `pnpm lint-staged` 对暂存的文件进行格式化和修复
