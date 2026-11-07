@@ -7,9 +7,24 @@ const base = isGithubActions && repo ? `/${repo}/` : "/";
 export default defineConfig({
   base,
   title: "Lint Kit",
-  description: "统一的代码风格，减少无效争论",
+  description: "用同一套命令运行内置的检查工具，开箱即用！",
   lang: "zh-CN",
+  head: [
+    [
+      "link",
+      {
+        rel: "icon",
+        href: `${base}brand/logo-light.svg`,
+        type: "image/svg+xml",
+      },
+    ],
+  ],
   themeConfig: {
+    logo: {
+      light: "/brand/logo-light.svg",
+      dark: "/brand/logo-dark.svg",
+    },
+    siteTitle: "Lint Kit",
     search: {
       provider: "local",
     },
@@ -21,9 +36,13 @@ export default defineConfig({
     ],
     sidebar: [
       {
-        text: "介绍",
+        text: "开始使用",
         collapsed: false,
         items: [
+          {
+            text: "介绍",
+            link: "/guide/introduction",
+          },
           {
             text: "快速开始",
             link: "/guide/getting-started",
@@ -35,7 +54,7 @@ export default defineConfig({
         ],
       },
       {
-        text: "配置",
+        text: "工具配置",
         collapsed: false,
         items: [
           {
@@ -53,15 +72,11 @@ export default defineConfig({
         ],
       },
       {
-        text: "推荐",
+        text: "更多信息",
         collapsed: false,
         items: [
           {
-            text: "IDE 支持",
-            link: "/guide/ide",
-          },
-          {
-            text: "参考项目",
+            text: "命令与配置",
             link: "/guide/reference",
           },
         ],
@@ -70,7 +85,7 @@ export default defineConfig({
     socialLinks: [
       {
         icon: "github",
-        link: "https://github.com/kriac/lint-kit",
+        link: "https://github.com/Kriac/lint-kit",
       },
     ],
     outline: {

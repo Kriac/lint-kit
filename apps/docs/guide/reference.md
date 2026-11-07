@@ -1,35 +1,75 @@
-# 参考项目
+# 命令与配置
 
-这里整理了 Lint Kit 直接依赖或重点参考过的项目，非常感谢所有的开源项目。
+日常开发只需要记住一个命令即可：`lint-kit check` 检查项目。
 
-## ESLint
+## 初始化：init
 
-- [eslint](https://github.com/eslint/eslint)：JS / TS 代码检查核心工具。
-- [typescript-eslint](https://github.com/typescript-eslint/typescript-eslint)：TS 解析器与类型感知规则。
-- [eslint-plugin-vue](https://github.com/vuejs/eslint-plugin-vue)：Vue 单文件组件规则集。
-- [eslint-plugin-perfectionist](https://github.com/azat-io/eslint-plugin-perfectionist)：导入、成员排序规则。
-- [eslint-config-prettier](https://github.com/prettier/eslint-config-prettier)：关闭与 Prettier 冲突的规则。
+```bash
+pnpm lint-kit init
+```
 
-## Stylelint
+按提示选择需要的检查工具，工具配置会写入项目根目录；同名文件已存在时会保留，编辑器设置则会按所选工具更新。
 
-- [stylelint](https://github.com/stylelint/stylelint)：CSS 代码检查核心工具。
-- [stylelint-config-standard](https://github.com/stylelint/stylelint-config-standard)：标准规则预设。
-- [stylelint-config-standard-scss](https://github.com/stylelint-scss/stylelint-config-standard-scss)：SCSS 标准规则预设。
-- [stylelint-config-recommended-vue](https://github.com/ota-meshi/stylelint-config-recommended-vue)：Vue 推荐规则预设。
-- [postcss-html](https://github.com/ota-meshi/postcss-html)：HTML / Vue 文件样式块解析器。
-- [stylelint-order](https://github.com/hudochenkov/stylelint-order)：样式属性排序规则。
-- [stylelint-config-recess-order](https://github.com/stormwarning/stylelint-config-recess-order)：CSS 属性排序预设。
+## 检查与修复：check
 
-## Commitlint
+```bash
+pnpm lint-kit check
+pnpm lint-kit check --fix
+```
 
-- [commitlint](https://github.com/conventional-changelog/commitlint)：校验 Commit Message 是否符合 Conventional Commits 规范。
-- [czg](https://github.com/Zhengqbbb/cz-git)：交互式提交工具，引导生成规范提交信息。
+默认检查 Prettier、ESLint 和 Stylelint。**只有在项目目录找到对应配置时才会运行工具**，因此没有输出某个工具的结果，不代表该工具检查通过。
 
-## Prettier
+| 选项                  | 用途                                      |
+| --------------------- | ----------------------------------------- |
+| `--fix`               | 自动修复工具能够处理的问题                |
+| `--prettier`          | 只运行 Prettier                           |
+| `--eslint`            | 只运行 ESLint                             |
+| `--stylelint`         | 只运行 Stylelint                          |
+| `--commitlint <file>` | 校验指定文件中的提交信息                  |
+| `[files...]`          | 指定文件、目录或 glob；省略时检查整个项目 |
 
-- [prettier](https://github.com/prettier/prettier)：统一代码格式化，支持 JS、TS、Vue、CSS、JSON、Markdown 等格式。
+显式选择工具后，只运行所选工具；可以组合多个选项：
 
-## Git 工程化
+```bash
+pnpm lint-kit check --eslint --stylelint
+pnpm lint-kit check --prettier --fix README.md
+```
 
-- [husky](https://github.com/typicode/husky)：管理 Git Hook，在提交前自动触发 lint。
-- [lint-staged](https://github.com/okonet/lint-staged)：只对暂存区文件执行 lint，避免全量扫描。
+检查发现无法自动修复的问题时，需要根据终端中的文件位置和规则提示手动处理，再运行检查。
+
+## 检查暂存文件：staged
+
+```bash
+pnpm lint-kit staged
+```
+
+只检查 Git 暂存文件，对常见代码、样式和文档文件执行 `check --fix`，修复成功后，变更会加入暂存区，提交前请检查差异。
+
+需要指定 lint-staged 配置文件时使用：
+
+```bash
+pnpm lint-kit staged --config lint-staged.config.mjs
+```
+
+如何自动在提交前运行，见[工作流集成](/guide/workflow)。
+
+## 指定目录与查看帮助
+
+三个命令都支持 `--cwd <dir>`。路径以指定目录为基准：
+
+```bash
+pnpm lint-kit --help
+pnpm lint-kit --version
+pnpm lint-kit check --help
+pnpm lint-kit check --cwd apps/web
+```
+
+## 单独使用配置包
+
+如果已有自己的工具链，不需要使用 CLI，也可以只安装所需的规则配置：
+
+| 配置包                     | 使用说明                             |
+| -------------------------- | ------------------------------------ |
+| `@kriac/eslint-config`     | [ESLint 配置](/guide/eslint)         |
+| `@kriac/stylelint-config`  | [Stylelint 配置](/guide/stylelint)   |
+| `@kriac/commitlint-config` | [Commitlint 配置](/guide/commitlint) |

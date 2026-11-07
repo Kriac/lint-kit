@@ -1,6 +1,8 @@
 {
   "include": [".vitepress/**/*.ts"],
   "compilerOptions": {
+    "types": ["vite/client"],
+
     "target": "ES2022",
     "module": "ESNext",
     "moduleResolution": "Bundler",

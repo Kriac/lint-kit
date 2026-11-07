@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" fill="none">
+  <title>Lint-kit logo</title>
+  <g stroke="#0F172A" stroke-width="45" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M131 178L53 256L131 334"/>
+    <path d="M381 178L459 256L381 334"/>
+  </g>
+  <path d="M188 261L237 310L324 195" stroke="#22C55E" stroke-width="45" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

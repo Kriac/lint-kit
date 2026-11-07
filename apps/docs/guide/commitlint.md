@@ -1,57 +1,55 @@
 # Commitlint 配置
 
-`@kriac/commitlint-config` 提供了统一的提交信息规范配置，用于校验 Git 提交信息。
+`@kriac/commitlint-config` 提供提交信息校验规则，可单独用于 Commitlint。
 
-内置配置包括：
+## 快速开始
 
-- `Conventional Commits type`
+安装配置包与 Commitlint CLI：
 
-## 配置
+```bash
+pnpm add -D @kriac/commitlint-config @commitlint/cli
+```
 
-### commitlint.config.mjs
+在项目根目录的 `commitlint.config.mjs` 中启用：
 
 ```js
 import config from "@kriac/commitlint-config";
 
-export default config({
-  // ...
-});
+export default config();
 ```
 
-### 扩展 rules
+## 默认校验
+
+默认规则要求提交类型非空，且类型必须来自以下列表：
+
+`feat`、`fix`、`style`、`refactor`、`perf`、`test`、`ci`、`docs`、`chore`、`revert`
+
+例如：
+
+```text
+feat: add search
+fix: handle empty input
+docs: update setup guide
+```
+
+以上是常见的 Conventional Commits 写法。当前配置默认只校验类型非空和类型是否在允许列表内；scope、subject 是否为空、标点及标题长度等要求，可在项目中另行配置。
+
+## 自定义规则
+
+配置工厂接受 Commitlint 的 `rules`，项目规则会覆盖默认值。例如要求提交主题非空：
 
 ```js
 import config from "@kriac/commitlint-config";
 
 export default config({
   rules: {
-    "scope-empty": [2, "never"],
     "subject-empty": [2, "never"],
   },
 });
 ```
 
-## 选项
+## 参考
 
-配置仅用于提交信息校验，不再提供交互式提交功能。原 `scopes` 选项已移除；如需限制提交范围，请配置 `scope-enum` 规则：
-
-```js
-import config from "@kriac/commitlint-config";
-
-export default config({
-  rules: {
-    "scope-enum": [2, "always", ["docs"]],
-  },
-});
-```
-
-### `rules`
-
-- 类型：`UserConfig["rules"]`（来自 `@commitlint/types`）
-- 默认值：`{}`
-- 说明：扩展或覆盖默认的 commitlint 规则。
-
-## 默认规则
-
-- `type-empty`: 必须填写提交类型
-- `type-enum`: 提交类型必须在内置枚举范围内
+- [Commitlint 配置文档](https://commitlint.js.org/reference/configuration.html)
+- [Commitlint 规则参考](https://commitlint.js.org/reference/rules.html)
+- [Conventional Commits](https://www.conventionalcommits.org/)
