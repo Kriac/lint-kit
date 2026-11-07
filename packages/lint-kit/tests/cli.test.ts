@@ -43,6 +43,27 @@ describe("CLI entrypoint", () => {
     expect(version.stdout).toContain(`lint-kit/${packageJson.version}`);
   });
 
+  it("prints help when no command or options are provided", () => {
+    const result = spawnSync(process.execPath, [cliPath], {
+      encoding: "utf8",
+    });
+
+    expect(result.status).toBe(0);
+    expect(result.stdout).toContain("check [...files]");
+  });
+
+  it.each([
+    ["unknown command", "not-a-command", "Unknown command `not-a-command`"],
+    ["unknown option", "--bogus", "Unknown option `--bogus`"],
+  ])("rejects an %s", (_label, argument, message) => {
+    const result = spawnSync(process.execPath, [cliPath, argument], {
+      encoding: "utf8",
+    });
+
+    expect(result.status).toBe(1);
+    expect(result.stderr).toContain(message);
+  });
+
   it("applies the selected formatter in the requested project directory", async () => {
     const cwd = await createProject();
     const filePath = resolve(cwd, "example.js");

@@ -36,7 +36,15 @@ cli
 
 try {
   cli.parse(undefined, { run: false });
-  await cli.runMatchedCommand();
+
+  if (cli.matchedCommand) {
+    await cli.runMatchedCommand();
+  } else if (cli.args[0]) {
+    throw new Error(`Unknown command \`${cli.args[0]}\``);
+  } else if (!cli.options.help && !cli.options.version) {
+    cli.globalCommand.checkUnknownOptions();
+    cli.outputHelp();
+  }
 } catch (error) {
   output.error(error instanceof Error ? error.message : String(error));
   process.exitCode = 1;
