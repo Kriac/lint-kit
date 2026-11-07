@@ -1,8 +1,10 @@
 #!/usr/bin/env node
+import type { StagedOptions } from "./cli/staged.ts";
 import { cac } from "cac";
 import { init } from "./cli/init.ts";
 import { check } from "./cli/check.ts";
-import { output } from "./cli/output.ts";
+import { staged } from "./cli/staged.ts";
+import { output } from "./cli/utils/output.ts";
 import packageJson from "../package.json" with { type: "json" };
 
 const cli = cac("lint-kit");
@@ -23,6 +25,14 @@ cli
   .option("--stylelint", "检查 Stylelint")
   .option("--commitlint <file>", "校验指定文件中的提交信息")
   .action(check);
+
+cli
+  .command("staged", "检查并修复 Git 暂存文件")
+  .option("--cwd <dir>", "指定项目目录")
+  .option("--config <file>", "指定 lint-staged 配置文件")
+  .action((options: StagedOptions) => {
+    return staged(options, import.meta.filename);
+  });
 
 try {
   cli.parse(undefined, { run: false });

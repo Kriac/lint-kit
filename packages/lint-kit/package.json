@@ -35,6 +35,7 @@
     "commitlint": "20.3.0",
     "cosmiconfig": "9.0.2",
     "eslint": "9.39.4",
+    "lint-staged": "16.4.0",
     "picocolors": "1.1.1",
     "prettier": "3.7.2",
     "stylelint": "17.12.0"
