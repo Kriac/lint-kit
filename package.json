@@ -3,7 +3,7 @@
   "packageManager": "pnpm@10.25.0",
   "scripts": {
     "prepare": "husky",
-    "lint": "pnpm -r lint",
+    "check": "pnpm -r lint && pnpm lint-kit check",
     "check:fix": "pnpm lint-kit check --fix",
     "test": "vitest run",
     "test:commit": "vitest run packages/commitlint",
@@ -25,27 +25,13 @@
     "@kriac/lint-kit": "workspace:*",
     "@types/node": "25.6.0",
     "husky": "9.1.7",
-    "lint-staged": "16.4.0",
     "typescript": "5.8.2",
     "vite": "8.3.4",
     "vitest": "5.0.5"
   },
   "lint-staged": {
-    "*.vue": [
-      "lint-kit check --eslint --fix",
-      "lint-kit check --stylelint --fix",
-      "prettier --write"
-    ],
-    "*.{js,ts,jsx,tsx}": [
-      "lint-kit check --eslint --fix",
-      "lint-kit check --prettier --fix"
-    ],
-    "*.{css,scss}": [
-      "lint-kit check --stylelint --fix",
-      "lint-kit check --prettier --fix"
-    ],
-    "*.{json,yaml,md}": [
-      "lint-kit check --prettier --fix"
+    "*": [
+      "lint-kit check --fix"
     ]
   }
 }
