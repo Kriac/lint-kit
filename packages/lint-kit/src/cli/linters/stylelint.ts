@@ -84,6 +84,12 @@ export async function buildStylelintArgs(
   if (fix) {
     args.push("--fix");
   }
-  args.push("--allow-empty-input", "--", ...targets);
+  args.push(
+    "--allow-empty-input",
+    "--globby-options",
+    '{"dot":true}',
+    "--",
+    ...targets,
+  );
   return args;
 }
