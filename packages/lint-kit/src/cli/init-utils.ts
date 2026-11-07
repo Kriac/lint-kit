@@ -2,7 +2,7 @@ import type { Linter } from "./check-utils.ts";
 import { join } from "node:path";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { assign, parse, stringify, tokenize } from "comment-json";
-import { output } from "./output.ts";
+import { output } from "./utils/output.ts";
 
 type JsonObject = Record<string, unknown>;
 

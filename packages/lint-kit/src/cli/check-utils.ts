@@ -2,7 +2,7 @@ import { spawn } from "node:child_process";
 import { createRequire } from "node:module";
 import { readFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
-import { cosmiconfig } from "cosmiconfig";
+import { findConfigFile } from "./utils/config.ts";
 import { buildEslintArgs, eslintConfigSearchPlaces } from "./linters/eslint.ts";
 import {
   buildPrettierArgs,
@@ -83,30 +83,12 @@ export async function findConfigPath(
   linter: Linter,
   cwd: string,
 ): Promise<string | undefined> {
-  // 脚本及 JSON5/TOML 配置由对应工具加载，发现阶段只确定路径。
-  const deferredLoaders = Object.fromEntries(
-    deferredExtensions.map((extension) => {
-      return [
-        `.${extension}`,
-        () => {
-          return {};
-        },
-      ];
-    }),
+  return findConfigFile(
+    linter,
+    cwd,
+    configSearchPlaces[linter],
+    deferredExtensions,
   );
-  const explorer = cosmiconfig(linter, {
-    searchPlaces: configSearchPlaces[linter],
-    searchStrategy: "global",
-    loaders: {
-      ...deferredLoaders,
-      ".json": (_filepath, content) => {
-        return JSON.parse(content.replace(/^\uFEFF/, ""));
-      },
-    },
-  });
-
-  const config = await explorer.search(cwd);
-  return config && !config.isEmpty ? config.filepath : undefined;
 }
 
 /**
