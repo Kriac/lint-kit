@@ -1,100 +1,75 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { init } from "../src/cli/init.ts";
-import { check } from "../src/cli/check.ts";
-import { output } from "../src/cli/output.ts";
+import { tmpdir } from "node:os";
+import { resolve } from "node:path";
+import { fileURLToPath } from "node:url";
+import { spawnSync } from "node:child_process";
+import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { afterEach, describe, expect, it } from "vitest";
+import packageJson from "../package.json" with { type: "json" };
 
-vi.mock(import("../src/cli/check.ts"), () => {
-  return { check: vi.fn() };
+const cliPath = fileURLToPath(new URL("../src/cli.ts", import.meta.url));
+const tempDirectories: string[] = [];
+
+async function createProject() {
+  const cwd = await mkdtemp(resolve(tmpdir(), "lint-kit-cli-"));
+  tempDirectories.push(cwd);
+  await writeFile(
+    resolve(cwd, ".prettierrc.json"),
+    JSON.stringify({ singleQuote: true }),
+  );
+  return cwd;
+}
+
+afterEach(async () => {
+  await Promise.all(
+    tempDirectories.splice(0).map((directory) => {
+      return rm(directory, { force: true, recursive: true });
+    }),
+  );
 });
 
-vi.mock(import("../src/cli/init.ts"), () => {
-  return { init: vi.fn() };
-});
-
-vi.mock(import("../src/cli/output.ts"), async (importOriginal) => {
-  const original = await importOriginal();
-  return { ...original, output: { ...original.output, error: vi.fn() } };
-});
-
-const originalArgv = process.argv;
-const originalExitCode = process.exitCode;
-
-describe("CLI 入口", () => {
-  beforeEach(() => {
-    vi.resetModules();
-    vi.resetAllMocks();
-    process.argv = [process.execPath, "lint-kit", "check"];
-  });
-
-  afterEach(() => {
-    process.argv = originalArgv;
-    process.exitCode = originalExitCode;
-    vi.restoreAllMocks();
-  });
-
-  it("只输出异步命令的错误消息并设置失败退出码", async () => {
-    const error = new Error("项目目录不是文件夹");
-    vi.mocked(check).mockRejectedValue(error);
-
-    await import("../src/cli.ts");
-
-    expect(output.error).toHaveBeenCalledExactlyOnceWith(error.message);
-    expect(process.exitCode).toBe(1);
-  });
-
-  it("处理非 Error 类型的异常", async () => {
-    vi.mocked(check).mockRejectedValue("执行失败");
-
-    await import("../src/cli.ts");
-
-    expect(output.error).toHaveBeenCalledExactlyOnceWith("执行失败");
-    expect(process.exitCode).toBe(1);
-  });
-
-  it("处理命令参数解析错误", async () => {
-    process.argv.push("--unknown-option");
-
-    await import("../src/cli.ts");
-
-    expect(output.error).toHaveBeenCalledExactlyOnceWith(
-      expect.stringContaining("Unknown option `--unknownOption`"),
-    );
-    expect(process.exitCode).toBe(1);
-    expect(check).not.toHaveBeenCalled();
-  });
-
-  it("保留命令返回的退出码", async () => {
-    vi.mocked(check).mockImplementation(async () => {
-      process.exitCode = 2;
+describe("CLI entrypoint", () => {
+  it("prints help and version through the executable entrypoint", () => {
+    const help = spawnSync(process.execPath, [cliPath, "--help"], {
+      encoding: "utf8",
+    });
+    const version = spawnSync(process.execPath, [cliPath, "--version"], {
+      encoding: "utf8",
     });
 
-    await import("../src/cli.ts");
-
-    expect(check).toHaveBeenCalledTimes(1);
-    expect(output.error).not.toHaveBeenCalled();
-    expect(process.exitCode).toBe(2);
+    expect(help.status).toBe(0);
+    expect(help.stdout).toContain("check [...files]");
+    expect(help.stdout).toContain("staged");
+    expect(version.status).toBe(0);
+    expect(version.stdout).toContain(`lint-kit/${packageJson.version}`);
   });
 
-  it("将 init 及其目录选项交给初始化命令", async () => {
-    process.argv = [process.execPath, "lint-kit", "init", "--cwd", "project"];
+  it("applies the selected formatter in the requested project directory", async () => {
+    const cwd = await createProject();
+    const filePath = resolve(cwd, "example.js");
+    await writeFile(filePath, 'const message = "hello";\n');
 
-    await import("../src/cli.ts");
-
-    expect(init).toHaveBeenCalledExactlyOnceWith(
-      expect.objectContaining({ cwd: "project" }),
+    const result = spawnSync(
+      process.execPath,
+      [cliPath, "check", "--cwd", cwd, "--prettier", "--fix", "example.js"],
+      { cwd: process.cwd(), encoding: "utf8" },
     );
-    expect(check).not.toHaveBeenCalled();
+
+    expect(result.status).toBe(0);
+    expect(await readFile(filePath, "utf8")).toBe("const message = 'hello';\n");
+    expect(result.stdout).toContain("检查完成");
   });
 
-  it("显示帮助时不执行命令", async () => {
-    process.argv = [process.execPath, "lint-kit", "--help"];
-    vi.spyOn(console, "log").mockImplementation(() => {
-      return undefined;
-    });
+  it("returns a failing exit code when a selected check finds unformatted code", async () => {
+    const cwd = await createProject();
+    await writeFile(resolve(cwd, "example.js"), 'const message = "hello";\n');
 
-    await import("../src/cli.ts");
+    const result = spawnSync(
+      process.execPath,
+      [cliPath, "check", "--cwd", cwd, "--prettier", "example.js"],
+      { cwd: process.cwd(), encoding: "utf8" },
+    );
 
-    expect(check).not.toHaveBeenCalled();
-    expect(output.error).not.toHaveBeenCalled();
+    expect(result.status).toBe(1);
+    expect(result.stderr).toContain("检查完成");
   });
 });

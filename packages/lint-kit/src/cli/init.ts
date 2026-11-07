@@ -1,9 +1,8 @@
 import type { Linter } from "./check-utils.ts";
 import type { VscodeLinter } from "./init-utils.ts";
-import { resolve } from "node:path";
-import { stat } from "node:fs/promises";
 import { isCancel, multiselect } from "@clack/prompts";
-import { output } from "./output.ts";
+import { output } from "./utils/output.ts";
+import { resolveCwd } from "./utils/cwd.ts";
 import { writeLinterConfigs, writeVscodeConfig } from "./init-utils.ts";
 
 /**
@@ -29,10 +28,7 @@ const vscodeOptions: { label: string; value: VscodeLinter }[] = [
  * 选择需要的 lint 工具并在项目目录中生成配置文件。
  */
 export async function init(options: InitOptions = {}) {
-  const cwd = resolve(options.cwd ?? process.cwd());
-  if (!(await stat(cwd)).isDirectory()) {
-    throw new Error(`${cwd} 不是一个目录`);
-  }
+  const cwd = await resolveCwd(options.cwd);
 
   const selected = await multiselect<Linter>({
     message: "请选择需要初始化的工具",

@@ -1,7 +1,6 @@
 import type { CheckOptions, Linter } from "./check-utils.ts";
-import { resolve } from "node:path";
-import { stat } from "node:fs/promises";
-import { measureTask, output } from "./output.ts";
+import { resolveCwd } from "./utils/cwd.ts";
+import { measureTask, output } from "./utils/output.ts";
 import {
   buildLinterArgs,
   findConfigPath,
@@ -20,10 +19,7 @@ const linterNames: Record<Linter, string> = {
  * 使用内置 lint 工具及目标项目的配置执行检查，并设置退出码。
  */
 export async function check(files: string[] = [], options: CheckOptions = {}) {
-  const cwd = resolve(options.cwd ?? process.cwd());
-  if (!(await stat(cwd)).isDirectory()) {
-    throw new Error(`${cwd} 不是一个目录`);
-  }
+  const cwd = await resolveCwd(options.cwd);
 
   const { result: exitCode, durationMs } = await measureTask(async () => {
     let exitCode = 0;
