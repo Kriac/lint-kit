@@ -32,16 +32,16 @@
     "@kriac/stylelint-config": "workspace:*",
     "cac": "7.1.0",
     "comment-json": "5.0.0",
-    "commitlint": "20.3.0",
-    "cosmiconfig": "9.0.2",
-    "eslint": "9.39.4",
-    "lint-staged": "16.4.0",
+    "commitlint": "21.2.4",
+    "cosmiconfig": "10.0.1",
+    "eslint": "10.14.0",
+    "lint-staged": "17.6.0",
     "picocolors": "1.1.1",
-    "prettier": "3.7.2",
-    "stylelint": "17.12.0"
+    "prettier": "3.9.10",
+    "stylelint": "17.16.0"
   },
   "devDependencies": {
-    "@types/node": "25.6.0",
+    "@types/node": "26.6.6",
     "tsdown": "0.22.0",
     "vue-tsc": "3.2.1"
   },
