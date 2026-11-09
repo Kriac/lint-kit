@@ -1,18 +1,22 @@
 <p align="center">
-  <img src="./apps/docs/public/brand/logo-light.svg" alt="Lint Kit" width="112">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="./apps/docs/public/brand/logo-dark.svg">
+    <img src="./apps/docs/public/brand/logo-light.svg" alt="Lint Kit" width="112">
+  </picture>
 </p>
 
 <h1 align="center">Lint Kit</h1>
 
-<p align="center">面向 TS 项目的代码检查工具集合</p>
+<p align="center">一款可组合的代码质量工具集</p>
 
 ## 特征
 
-- **内置工具**：项目本身无需安装 ESLint、Stylelint、Prettier 和 Commitlint
-- **统一命令**：全局统一检查命令，维护更加省心
-- **优先遵循标准规则**：所有检查工具都优先遵循各个语法的标准规则，尽可能的减少风格争论
+- **统一命令**: 一套命令即可完成代码风格检查、格式化与提交信息的校验
+- **内置工具**: 由 lint-kit 统一管理 ESLint、Stylelint 等代码检查工具的版本，无需单独维护和选择工具
+- **按需选择**: 支持按需组合检查工具与规则预设，灵活适配不同项目
+- **最佳实践**: 在遵循各语法推荐的规则基础上，我们还内置了代码排序规则，用于提升代码可读性与团队协作效率
 
-## 快速开始
+## 使用
 
 在项目根目录执行：
 
@@ -26,7 +30,7 @@ pnpm lint-kit check
 
 ## 文档
 
-请参考 [入门指南](https://kriac.github.io/lint-kit/guide/getting-started)
+请参考[快速开始](https://kriac.github.io/lint-kit/guide/getting-started)
 
 ## 贡献
 

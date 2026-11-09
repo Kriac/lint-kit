@@ -24,8 +24,13 @@
 
 .VPHomeHero .VPButton.brand:hover {
   color: #052e16;
-  background-color: #22c55e;
-  border-color: #22c55e;
+  background-color: #43d979;
+  border-color: #43d979;
+}
+
+.VPHomeHero .VPButton.brand:active {
+  background-color: #3cd273;
+  border-color: #3cd273;
 }
 
 .dark .VPHomeHero .VPButton.brand {
@@ -35,8 +40,13 @@
 }
 
 .dark .VPHomeHero .VPButton.brand:hover {
-  background-color: #4ade80;
-  border-color: #4ade80;
+  background-color: #35e475;
+  border-color: #35e475;
+}
+
+.dark .VPHomeHero .VPButton.brand:active {
+  background-color: #4dff91;
+  border-color: #4dff91;
 }
 
 .home-showcase {
