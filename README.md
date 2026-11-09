@@ -1,8 +1,6 @@
 <p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="./apps/docs/public/brand/logo-dark.svg">
-    <img src="./apps/docs/public/brand/logo-light.svg" alt="Lint Kit" width="112">
-  </picture>
+  <img src="./apps/docs/public/brand/logo-light.svg#gh-light-mode-only" alt="Lint Kit" width="112">
+  <img src="./apps/docs/public/brand/logo-dark.svg#gh-dark-mode-only" alt="Lint Kit" width="112">
 </p>
 
 <h1 align="center">Lint Kit</h1>
