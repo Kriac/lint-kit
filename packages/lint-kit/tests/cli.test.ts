@@ -1,9 +1,10 @@
 import { tmpdir } from "node:os";
-import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
+import { dirname, relative, resolve, sep } from "node:path";
 import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { afterEach, describe, expect, it } from "vitest";
+import { writeVscodeConfig } from "../src/cli/init-utils.ts";
 import packageJson from "../package.json" with { type: "json" };
 
 const cliPath = fileURLToPath(new URL("../src/cli.ts", import.meta.url));
@@ -102,6 +103,49 @@ describe("CLI entrypoint", () => {
     expect(result.status).not.toBe(0);
     expect(output).toContain("invalid.css");
     expect(output).toContain("color-no-invalid-hex");
+  });
+
+  it("uses lint-kit dependencies for the VS Code extensions", async () => {
+    const cwd = await createProject();
+    const packagePath = (name: string) => {
+      return fileURLToPath(import.meta.resolve(`${name}/package.json`));
+    };
+    const expectedPackagePath = (name: string) => {
+      return relative(cwd, dirname(packagePath(name)))
+        .split(sep)
+        .join("/");
+    };
+    const expectedNodeModulesPath = (name: string) => {
+      return relative(cwd, dirname(dirname(packagePath(name))))
+        .split(sep)
+        .join("/");
+    };
+
+    await writeVscodeConfig(cwd, ["eslint", "prettier", "stylelint"]);
+
+    const settings = JSON.parse(
+      await readFile(resolve(cwd, ".vscode", "settings.json"), "utf8"),
+    );
+    expect(settings).toMatchObject({
+      "eslint.nodePath": expectedNodeModulesPath("eslint"),
+      "prettier.prettierPath": expectedPackagePath("prettier"),
+      "stylelint.stylelintPath": expectedPackagePath("stylelint"),
+    });
+
+    for (const name of ["eslint", "prettier", "stylelint"]) {
+      const settingsPath =
+        name === "eslint"
+          ? settings["eslint.nodePath"]
+          : (settings[`${name}.prettierPath`] ??
+            settings[`${name}.stylelintPath`]);
+      const installedPackagePath =
+        name === "eslint"
+          ? resolve(cwd, settingsPath, name, "package.json")
+          : resolve(cwd, settingsPath, "package.json");
+      expect(
+        JSON.parse(await readFile(installedPackagePath, "utf8")),
+      ).toMatchObject({ name });
+    }
   });
 
   it("returns a failing exit code when a selected check finds unformatted code", async () => {

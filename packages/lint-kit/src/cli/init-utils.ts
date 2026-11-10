@@ -1,5 +1,6 @@
 import type { Linter } from "./check-utils.ts";
-import { join } from "node:path";
+import { fileURLToPath } from "node:url";
+import { dirname, join, relative, sep } from "node:path";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { assign, parse, stringify, tokenize } from "comment-json";
 import { output } from "./utils/output.ts";
@@ -127,6 +128,22 @@ function recommendExtension(recommendations: string[], extension: string) {
   }
 }
 
+function resolvePackageJsonPath(packageName: string): string {
+  return fileURLToPath(import.meta.resolve(`${packageName}/package.json`));
+}
+
+function resolvePackagePath(packageName: string, cwd: string): string {
+  return relative(cwd, dirname(resolvePackageJsonPath(packageName)))
+    .split(sep)
+    .join("/");
+}
+
+function resolveNodeModulesPath(packageName: string, cwd: string): string {
+  return relative(cwd, dirname(dirname(resolvePackageJsonPath(packageName))))
+    .split(sep)
+    .join("/");
+}
+
 /**
  * 合并并排序 VS Code 设置与插件推荐，保留已有配置和注释。
  */
@@ -159,19 +176,17 @@ export async function writeVscodeConfig(cwd: string, selected: VscodeLinter[]) {
 
   if (selected.includes("prettier")) {
     settings["editor.defaultFormatter"] = "esbenp.prettier-vscode";
-    settings["prettier.prettierPath"] =
-      "node_modules/@kriac/lint-kit/node_modules/prettier";
+    settings["prettier.prettierPath"] = resolvePackagePath("prettier", cwd);
     recommendExtension(recommendations, "esbenp.prettier-vscode");
   }
   if (selected.includes("eslint")) {
-    settings["eslint.nodePath"] = "node_modules/@kriac/lint-kit";
+    settings["eslint.nodePath"] = resolveNodeModulesPath("eslint", cwd);
     actions["source.fixAll.eslint"] = "explicit";
     recommendExtension(recommendations, "dbaeumer.vscode-eslint");
   }
   if (selected.includes("stylelint")) {
     settings["css.validate"] = false;
-    settings["stylelint.stylelintPath"] =
-      "node_modules/@kriac/lint-kit/node_modules/stylelint";
+    settings["stylelint.stylelintPath"] = resolvePackagePath("stylelint", cwd);
     settings["stylelint.validate"] = ["html", "css", "vue", "scss"];
     settings["stylelint.ignorePath"] = "${workspaceFolder}/.stylelintignore";
     actions["source.fixAll.stylelint"] = "explicit";
