@@ -26,10 +26,5 @@
     "typescript": "5.8.2",
     "vite": "8.3.6",
     "vitest": "5.1.0"
-  },
-  "lint-staged": {
-    "*.{js,mjs,cjs,jsx,ts,mts,cts,tsx,vue,css,scss,less,html,json,jsonc,json5,yaml,yml,md,mdx,graphql,gql}": [
-      "lint-kit check --fix"
-    ]
   }
 }

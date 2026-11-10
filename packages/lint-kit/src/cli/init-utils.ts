@@ -1,18 +1,24 @@
-import type { Linter } from "./check-utils.ts";
 import { fileURLToPath } from "node:url";
 import { dirname, join, relative, sep } from "node:path";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { assign, parse, stringify, tokenize } from "comment-json";
 import { output } from "./utils/output.ts";
+import { lintStagedDefaultPattern } from "./linters/lint-staged.ts";
 
 type JsonObject = Record<string, unknown>;
+
+/**
+ * 支持初始化的 lint 工具类型。
+ */
+export type InitLinter =
+  "commitlint" | "eslint" | "lint-staged" | "prettier" | "stylelint";
 
 /**
  * 支持 VS Code 插件集成的 lint 工具。
  */
 export type VscodeLinter = "eslint" | "prettier" | "stylelint";
 
-const configContents: Record<Linter, string> = {
+const configContents: Record<InitLinter, string> = {
   prettier: `export default {};
 `,
   eslint: `import config from "@kriac/lint-kit/eslint";
@@ -27,12 +33,16 @@ export default config();
 
 export default config();
 `,
+  "lint-staged": `export default {
+  "${lintStagedDefaultPattern}": "lint-kit check --fix",
+};
+`,
 };
 
 /**
  * 为选中的工具生成配置文件，不覆盖已有文件。
  */
-export async function writeLinterConfigs(cwd: string, selected: Linter[]) {
+export async function writeLinterConfigs(cwd: string, selected: InitLinter[]) {
   for (const linter of selected) {
     const filename = `${linter}.config.mjs`;
     try {

@@ -1,6 +1,10 @@
 import { resolve } from "node:path";
 import { resolveCwd } from "./utils/cwd.ts";
 import { findConfigFile } from "./utils/config.ts";
+import {
+  lintStagedConfigSearchPlaces,
+  lintStagedDefaultPattern,
+} from "./linters/lint-staged.ts";
 import lintStaged from "lint-staged";
 
 /**
@@ -10,21 +14,6 @@ export interface StagedOptions {
   config?: string;
   cwd?: string;
 }
-
-const configSearchPlaces = [
-  "package.json",
-  "package.yaml",
-  "package.yml",
-  ".lintstagedrc",
-  ".lintstagedrc.json",
-  ".lintstagedrc.yaml",
-  ".lintstagedrc.yml",
-  ...["mjs", "mts", "js", "ts", "cjs", "cts"].flatMap((extension) => {
-    return [`.lintstagedrc.${extension}`, `lint-staged.config.${extension}`];
-  }),
-];
-const defaultPattern =
-  "*.{js,mjs,cjs,jsx,ts,mts,cts,tsx,vue,css,scss,less,html,json,jsonc,json5,yaml,yml,md,mdx,graphql,gql}";
 
 /**
  * 优先使用项目配置，否则通过内置 check 命令修复常见类型的暂存文件。
@@ -39,14 +28,14 @@ export async function staged(
 
   const configPath = options.config
     ? resolve(cwd, options.config)
-    : await findConfigFile("lint-staged", cwd, configSearchPlaces);
+    : await findConfigFile("lint-staged", cwd, lintStagedConfigSearchPlaces);
   // 使用当前安装的 CLI 和 Node，避免依赖调用方的 PATH。
   const command = `"${process.execPath.replaceAll("\\", "/")}" "${cliPath.replaceAll("\\", "/")}" check --fix`;
   const success = await lintStaged({
     cwd,
     ...(configPath
       ? { configPath }
-      : { config: { [defaultPattern]: command } }),
+      : { config: { [lintStagedDefaultPattern]: command } }),
   });
   process.exitCode = success ? 0 : 1;
 }

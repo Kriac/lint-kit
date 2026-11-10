@@ -1,5 +1,4 @@
-import type { Linter } from "./check-utils.ts";
-import type { VscodeLinter } from "./init-utils.ts";
+import type { InitLinter, VscodeLinter } from "./init-utils.ts";
 import { isCancel, multiselect } from "@clack/prompts";
 import { output } from "./utils/output.ts";
 import { resolveCwd } from "./utils/cwd.ts";
@@ -12,11 +11,12 @@ export interface InitOptions {
   cwd?: string;
 }
 
-const linterOptions: { label: string; value: Linter }[] = [
+const linterOptions: { label: string; value: InitLinter }[] = [
   { label: "Prettier", value: "prettier" },
   { label: "ESLint", value: "eslint" },
   { label: "Stylelint", value: "stylelint" },
   { label: "Commitlint", value: "commitlint" },
+  { label: "lint-staged", value: "lint-staged" },
 ];
 const vscodeOptions: { label: string; value: VscodeLinter }[] = [
   { label: "Prettier", value: "prettier" },
@@ -30,7 +30,7 @@ const vscodeOptions: { label: string; value: VscodeLinter }[] = [
 export async function init(options: InitOptions = {}) {
   const cwd = await resolveCwd(options.cwd);
 
-  const selected = await multiselect<Linter>({
+  const selected = await multiselect<InitLinter>({
     message: "请选择需要初始化的工具",
     options: linterOptions,
     initialValues: linterOptions.map((option) => {
