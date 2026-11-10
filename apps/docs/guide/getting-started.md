@@ -18,11 +18,6 @@ pnpm add -D @kriac/lint-kit
     "lint": "lint-kit check",
     "lint:fix": "lint-kit check --fix",
     "lint:staged": "lint-kit staged"
-  },
-  "lint-staged": {
-    "*.{js,mjs,cjs,jsx,ts,mts,cts,tsx,vue,css,scss,less,html,json,jsonc,json5,yaml,yml,md,mdx,graphql,gql}": [
-      "lint-kit check --fix"
-    ]
   }
 }
 ```
