@@ -4,7 +4,10 @@ import { spawnSync } from "node:child_process";
 import { dirname, relative, resolve, sep } from "node:path";
 import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { afterEach, describe, expect, it } from "vitest";
-import { writeVscodeConfig } from "../src/cli/init-utils.ts";
+import {
+  writeLinterConfigs,
+  writeVscodeConfig,
+} from "../src/cli/init-utils.ts";
 import packageJson from "../package.json" with { type: "json" };
 
 const cliPath = fileURLToPath(new URL("../src/cli.ts", import.meta.url));
@@ -29,6 +32,20 @@ afterEach(async () => {
 });
 
 describe("CLI entrypoint", () => {
+  it("generates a lint-staged configuration", async () => {
+    const cwd = await createProject();
+
+    await writeLinterConfigs(cwd, ["lint-staged"]);
+
+    const config = await readFile(
+      resolve(cwd, "lint-staged.config.mjs"),
+      "utf8",
+    );
+    expect(config).toContain(
+      '"*.{js,mjs,cjs,jsx,ts,mts,cts,tsx,vue,css,scss,less,html,json,jsonc,json5,yaml,yml,md,mdx,graphql,gql}": "lint-kit check --fix"',
+    );
+  });
+
   it("prints help and version through the executable entrypoint", () => {
     const help = spawnSync(process.execPath, [cliPath, "--help"], {
       encoding: "utf8",
