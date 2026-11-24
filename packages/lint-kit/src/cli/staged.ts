@@ -16,9 +16,7 @@ export interface StagedOptions {
 }
 
 /**
- * 优先使用项目配置，否则通过内置 check 命令修复常见类型的暂存文件。
- * 暂存区备份、部分暂存保护和失败恢复均由 lint-staged 处理。
- * cliPath 指向调用入口，避免构建分块后相对路径发生变化。
+ * 执行 lint-staged 检查和修复暂存区文件。
  */
 export async function staged(
   options: StagedOptions = {},

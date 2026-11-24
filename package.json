@@ -3,8 +3,9 @@
   "packageManager": "pnpm@12.18.0",
   "scripts": {
     "prepare": "husky",
-    "lint": "pnpm -r lint && pnpm lint-kit check",
-    "lint:fix": "pnpm lint-kit check --fix",
+    "typecheck": "pnpm -r typecheck",
+    "check": "pnpm typecheck && pnpm lint-kit check",
+    "check:fix": "pnpm lint-kit check --fix",
     "lint:staged": "pnpm lint-kit staged",
     "test": "vitest run",
     "dev:docs": "pnpm -F @kriac/lint-kit-docs dev",

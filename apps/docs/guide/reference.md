@@ -43,7 +43,7 @@ pnpm lint-kit check --prettier --fix README.md
 pnpm lint-kit staged
 ```
 
-只检查 Git 暂存文件，对常见代码、样式和文档文件执行 `check --fix`，修复成功后，变更会加入暂存区，提交前请检查差异。
+只处理 Git 暂存文件。项目已有 lint-staged 配置时，按该配置执行。其余情况下，内置配置会对常见代码、样式和文档文件执行 `check --fix`，并将成功修复的变更加入暂存区。
 
 需要指定 lint-staged 配置文件时使用：
 

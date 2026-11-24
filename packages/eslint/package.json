@@ -15,7 +15,7 @@
     "eslint config"
   ],
   "scripts": {
-    "lint": "vue-tsc -b --noEmit",
+    "typecheck": "vue-tsc -b --noEmit",
     "build": "tsdown",
     "release": "pnpm publish --access public"
   },
