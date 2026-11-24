@@ -10,13 +10,13 @@
 pnpm add -D @kriac/lint-kit
 ```
 
-添加 lint 命令 `package.json`：
+在 `package.json` 中添加项目脚本。
 
 ```json
 {
   "scripts": {
-    "lint": "lint-kit check",
-    "lint:fix": "lint-kit check --fix",
+    "check": "lint-kit check",
+    "check:fix": "lint-kit check --fix",
     "lint:staged": "lint-kit staged"
   }
 }
@@ -32,9 +32,8 @@ pnpm lint-kit init
 
 ## 用法
 
-```bash
-pnpm lint-kit check
-pnpm lint-kit check --fix
-```
+- 运行 `pnpm check` 检查代码风格。
+- 运行 `pnpm check:fix` 自动修复可处理的代码风格问题。
+- 运行 `pnpm lint:staged` 处理 Git 暂存文件。
 
 下一步可阅读 [工作流集成](/guide/workflow) 或查看各工具的 [配置说明](/guide/reference)。

@@ -37,7 +37,7 @@ pnpm lint-kit check --commitlint "$1"
 
 ### `.husky/pre-commit`
 
-在提交前运行 lint 检查，并格式化和修复暂存文件：
+在提交前运行 `lint:staged` 处理暂存文件。执行的命令由项目的 lint-staged 配置决定，未配置时默认执行 `lint-kit check --fix`。
 
 ```bash
 #!/usr/bin/env sh
