@@ -19,7 +19,7 @@ export function buildEslintArgs(
   fix: boolean,
 ): string[] {
   const targets = files.length > 0 ? files : ["."];
-  const args = ["--config", configPath];
+  const args = ["--config", configPath, "--concurrency", "auto"];
   if (fix) {
     args.push("--fix");
   }
