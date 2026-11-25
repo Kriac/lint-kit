@@ -1,8 +1,3 @@
-<p align="center">
-  <img src="./apps/docs/public/brand/logo-light.svg#gh-light-mode-only" alt="Lint Kit" width="112">
-  <img src="./apps/docs/public/brand/logo-dark.svg#gh-dark-mode-only" alt="Lint Kit" width="112">
-</p>
-
 <h1 align="center">Lint Kit</h1>
 
 <p align="center">一款可自由组合的代码质量工具集</p>
