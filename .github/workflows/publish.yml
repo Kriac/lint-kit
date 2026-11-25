@@ -1,0 +1,206 @@
+name: Publish lint-kit
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+permissions: {}
+
+concurrency:
+  group: publish-lint-kit-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  NPM_REGISTRY: https://registry.npmjs.org
+
+jobs:
+  build:
+    if: github.event_name != 'push' || !github.event.deleted
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          package-manager-cache: false
+
+      - name: Validate version and release notes
+        id: version
+        run: |
+          version=$(node -p "require('./packages/lint-kit/package.json').version")
+          if [[ ! "$version" =~ ^(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ ]]; then
+            echo "Expected a stable version (X.Y.Z): $version" >&2
+            exit 1
+          fi
+          if [[ "$GITHUB_EVENT_NAME" == push ]]; then
+            if [[ "$GITHUB_REF" != "refs/tags/v$version" ]]; then
+              echo "Expected release tag v$version, got $GITHUB_REF" >&2
+              exit 1
+            fi
+            if ! git merge-base --is-ancestor HEAD refs/remotes/origin/main; then
+              echo 'The release tag must point to a commit on main.' >&2
+              exit 1
+            fi
+          fi
+          test -s ".github/release-notes/v$version.md"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Install dependencies
+        env:
+          HUSKY: "0"
+        run: |
+          corepack enable
+          corepack install
+          pnpm install --frozen-lockfile
+
+      - name: Build and verify
+        run: |
+          pnpm --filter '@kriac/lint-kit...' build
+          pnpm --filter '@kriac/lint-kit...' typecheck
+          pnpm test
+
+      - name: Pack and verify publishable files
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          releaseDir="$RUNNER_TEMP/lint-kit-release"
+          inspectDir="$RUNNER_TEMP/lint-kit-inspect"
+          mkdir -p "$releaseDir" "$inspectDir"
+          pnpm --dir packages/lint-kit pack --out "$releaseDir/lint-kit.tgz"
+          cp ".github/release-notes/v$VERSION.md" "$releaseDir/release-notes.md"
+          tar -xzf "$releaseDir/lint-kit.tgz" -C "$inspectDir"
+
+          node --input-type=module - "$inspectDir/package" <<'NODE'
+          import assert from 'node:assert/strict';
+          import { readFileSync, statSync } from 'node:fs';
+          import { join } from 'node:path';
+
+          const packageDir = process.argv[2];
+          const readManifest = (path) => JSON.parse(readFileSync(path, 'utf8'));
+          const source = readManifest('packages/lint-kit/package.json');
+          const packed = readManifest(join(packageDir, 'package.json'));
+          assert.equal(packed.name, '@kriac/lint-kit');
+          assert.equal(packed.version, process.env.VERSION);
+
+          for (const [name, spec] of Object.entries(source.dependencies)) {
+            if (!spec.startsWith('workspace:')) continue;
+            const version = packed.dependencies[name];
+            assert.match(version, /^\d+\.\d+\.\d+(?:-[\w.-]+)?$/);
+            const response = await fetch(`${process.env.NPM_REGISTRY}/${encodeURIComponent(name)}/${version}`, {
+              signal: AbortSignal.timeout(15_000),
+            });
+            assert(response.ok, `${name}@${version} is not available on npm (HTTP ${response.status})`);
+            assert.equal((await response.json()).version, version);
+          }
+
+          for (const path of [
+            ...Object.values(source.bin),
+            ...Object.values(source.exports).flatMap(Object.values),
+          ]) {
+            assert(statSync(join(packageDir, path)).isFile(), `Missing packaged file: ${path}`);
+          }
+          NODE
+
+          smokeDir="$inspectDir/smoke"
+          npm install --prefix "$smokeDir" --registry "$NPM_REGISTRY" \
+            --ignore-scripts --no-audit --no-fund --no-package-lock "$releaseDir/lint-kit.tgz"
+          cliVersion=$("$smokeDir/node_modules/.bin/lint-kit" --version)
+          [[ "${cliVersion%% *}" == "lint-kit/$VERSION" ]]
+
+      - name: Upload verified package and notes
+        uses: actions/upload-artifact@v4
+        with:
+          name: lint-kit-release
+          path: ${{ runner.temp }}/lint-kit-release/
+          if-no-files-found: error
+          overwrite: true
+          retention-days: 14
+
+  publish-npm:
+    if: github.event_name == 'push'
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    steps:
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          registry-url: ${{ env.NPM_REGISTRY }}
+          package-manager-cache: false
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: lint-kit-release
+
+      - name: Publish package with npm Trusted Publishing
+        env:
+          VERSION: ${{ needs.build.outputs.version }}
+        run: |
+          readIntegrity() {
+            node --input-type=module <<'NODE'
+          const response = await fetch(`${process.env.NPM_REGISTRY}/@kriac%2flint-kit/${process.env.VERSION}`, {
+            cache: 'no-store',
+            signal: AbortSignal.timeout(15_000),
+          });
+          if (response.status === 404) {
+            console.log('missing');
+          } else {
+            if (!response.ok) throw new Error(`npm metadata lookup failed: HTTP ${response.status}`);
+            const metadata = await response.json();
+            if (!metadata.dist?.integrity) throw new Error('npm metadata has no integrity');
+            console.log(metadata.dist.integrity);
+          }
+          NODE
+          }
+
+          expected=$(node -e "const {createHash}=require('node:crypto'); const {readFileSync}=require('node:fs'); console.log('sha512-'+createHash('sha512').update(readFileSync('lint-kit.tgz')).digest('base64'))")
+          actual=$(readIntegrity)
+          if [[ "$actual" == missing ]]; then
+            npm publish ./lint-kit.tgz --access public
+            for attempt in {1..6}; do
+              actual=$(readIntegrity)
+              [[ "$actual" != missing ]] && break
+              sleep 5
+            done
+          fi
+          if [[ "$actual" != "$expected" ]]; then
+            echo 'npm integrity does not match the verified tarball.' >&2
+            exit 1
+          fi
+
+  github-release:
+    needs: [build, publish-npm]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: lint-kit-release
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          TAG: v${{ needs.build.outputs.version }}
+        run: |
+          if isDraft=$(gh release view "$TAG" --json isDraft --jq .isDraft); then
+            if [[ "$isDraft" == true ]]; then
+              echo "A draft release already exists for $TAG. Review and publish it manually." >&2
+              exit 1
+            fi
+            echo "GitHub Release $TAG already exists."
+          else
+            gh release create "$TAG" --verify-tag --title "$TAG" --notes-file release-notes.md
+          fi
