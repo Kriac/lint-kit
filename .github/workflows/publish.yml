@@ -148,18 +148,34 @@ jobs:
           VERSION: ${{ needs.build.outputs.version }}
         run: |
           readIntegrity() {
-            node --input-type=module <<'NODE'
-          const response = await fetch(`${process.env.NPM_REGISTRY}/@kriac%2flint-kit/${process.env.VERSION}`, {
-            cache: 'no-store',
-            signal: AbortSignal.timeout(15_000),
-          });
-          if (response.status === 404) {
+            node --input-type=module - "${1:-0}" <<'NODE'
+          import { setTimeout as sleep } from 'node:timers/promises';
+
+          const waitSeconds = Number(process.argv[2]);
+          const waitSignal = waitSeconds > 0 ? AbortSignal.timeout(waitSeconds * 1_000) : undefined;
+          const url = `${process.env.NPM_REGISTRY}/@kriac%2flint-kit/${process.env.VERSION}`;
+
+          try {
+            while (true) {
+              const requestSignal = AbortSignal.timeout(15_000);
+              const signal = waitSignal ? AbortSignal.any([waitSignal, requestSignal]) : requestSignal;
+              const response = await fetch(url, { cache: 'no-store', signal });
+              if (response.ok) {
+                const metadata = await response.json();
+                if (!metadata.dist?.integrity) throw new Error('npm metadata has no integrity');
+                console.log(metadata.dist.integrity);
+                break;
+              }
+              if (response.status !== 404) throw new Error(`npm metadata lookup failed: HTTP ${response.status}`);
+              if (!waitSignal) {
+                console.log('missing');
+                break;
+              }
+              await sleep(5_000, undefined, { signal: waitSignal });
+            }
+          } catch (error) {
+            if (!waitSignal?.aborted) throw error;
             console.log('missing');
-          } else {
-            if (!response.ok) throw new Error(`npm metadata lookup failed: HTTP ${response.status}`);
-            const metadata = await response.json();
-            if (!metadata.dist?.integrity) throw new Error('npm metadata has no integrity');
-            console.log(metadata.dist.integrity);
           }
           NODE
           }
@@ -168,11 +184,11 @@ jobs:
           actual=$(readIntegrity)
           if [[ "$actual" == missing ]]; then
             npm publish ./lint-kit.tgz --access public
-            for attempt in {1..6}; do
-              actual=$(readIntegrity)
-              [[ "$actual" != missing ]] && break
-              sleep 5
-            done
+            actual=$(readIntegrity 300)
+            if [[ "$actual" == missing ]]; then
+              echo "Timed out after 5 minutes waiting for @kriac/lint-kit@$VERSION to become available on npm." >&2
+              exit 1
+            fi
           fi
           if [[ "$actual" != "$expected" ]]; then
             echo 'npm integrity does not match the verified tarball.' >&2
