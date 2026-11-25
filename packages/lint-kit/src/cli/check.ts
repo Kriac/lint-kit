@@ -21,27 +21,45 @@ const linterNames: Record<Linter, string> = {
 export async function check(files: string[] = [], options: CheckOptions = {}) {
   const cwd = await resolveCwd(options.cwd);
 
+  const linters = selectLinters(options);
+  const fix = options.fix === true;
+  const parallel = !fix && linters.length > 1;
+
+  async function checkLinter(linter: Linter) {
+    const configPath = await findConfigPath(linter, cwd);
+    const args = await buildLinterArgs(linter, configPath, files, cwd, options);
+    if (!args) {
+      return 0;
+    }
+
+    const lintName = linterNames[linter];
+    if (parallel) {
+      return runLinter(linter, args, cwd, fix, () => {
+        output.info(`${lintName} 检查结果`);
+      });
+    }
+
+    output.info(`正在执行 ${lintName}...`);
+    return runLinter(linter, args, cwd, fix);
+  }
+
   const { result: exitCode, durationMs } = await measureTask(async () => {
     let exitCode = 0;
 
-    for (const linter of selectLinters(options)) {
-      const configPath = await findConfigPath(linter, cwd);
-      const args = await buildLinterArgs(
-        linter,
-        configPath,
-        files,
-        cwd,
-        options,
-      );
-      if (!args) {
-        continue;
+    if (parallel) {
+      const results = await Promise.allSettled(linters.map(checkLinter));
+      for (const result of results) {
+        if (result.status === "rejected") {
+          throw result.reason;
+        }
+        exitCode = Math.max(exitCode, result.value);
       }
-
-      const lintName = linterNames[linter];
-      output.info(`正在执行 ${lintName}...`);
-      exitCode = Math.max(exitCode, await runLinter(linter, args, cwd));
+      return exitCode;
     }
 
+    for (const linter of linters) {
+      exitCode = Math.max(exitCode, await checkLinter(linter));
+    }
     return exitCode;
   });
 

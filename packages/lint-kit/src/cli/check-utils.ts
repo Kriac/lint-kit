@@ -1,7 +1,7 @@
 import { spawn } from "node:child_process";
 import { createRequire } from "node:module";
-import { readFile } from "node:fs/promises";
-import { dirname, resolve } from "node:path";
+import { mkdir, readFile } from "node:fs/promises";
+import { dirname, join, resolve } from "node:path";
 import { findConfigFile } from "./utils/config.ts";
 import { buildEslintArgs, eslintConfigSearchPlaces } from "./linters/eslint.ts";
 import {
@@ -105,36 +105,83 @@ export async function buildLinterArgs(
     return undefined;
   }
 
+  const fix = options.fix === true;
   switch (linter) {
     case "prettier":
-      return buildPrettierArgs(files, options.fix === true);
+      return buildPrettierArgs(files, fix);
     case "eslint":
-      return buildEslintArgs(configPath, files, options.fix === true);
+      return buildEslintArgs(configPath, files, fix);
     case "stylelint":
-      return buildStylelintArgs(configPath, files, cwd, options.fix === true);
+      return buildStylelintArgs(configPath, files, cwd, fix);
     case "commitlint":
       return buildCommitlintArgs(configPath, cwd, options.commitlint);
   }
 }
 
+async function buildCacheArgs(linter: Linter, cwd: string, fix: boolean) {
+  // ESLint 规则可能依赖其他文件，目标文件未变也需要重新检查。
+  if (linter === "eslint" || linter === "commitlint") {
+    return [];
+  }
+
+  const cacheDir = join(cwd, "node_modules", ".cache", "lint-kit");
+
+  try {
+    await mkdir(cacheDir, { recursive: true });
+  } catch {
+    return [];
+  }
+
+  return [
+    "--cache",
+    "--cache-strategy",
+    "content",
+    "--cache-location",
+    join(cacheDir, `${linter}-${fix ? "fix" : "check"}.json`),
+  ];
+}
+
 /**
- * 启动指定 lint 工具并返回退出码。
+ * 启动指定 lint 工具；并行检查时暂存输出，避免不同工具的诊断交错。
  */
 export async function runLinter(
   linter: Linter,
   args: string[],
   cwd: string,
+  fix: boolean,
+  beforeOutput?: () => void,
 ): Promise<number> {
-  const binaryPath = await resolveBinaryPath(linter);
+  const [binaryPath, cacheArgs] = await Promise.all([
+    resolveBinaryPath(linter),
+    buildCacheArgs(linter, cwd, fix),
+  ]);
 
   return new Promise((resolveExit, reject) => {
-    const child = spawn(process.execPath, [binaryPath, ...args], {
+    const stdio = beforeOutput ? "pipe" : "inherit";
+    const child = spawn(process.execPath, [binaryPath, ...cacheArgs, ...args], {
       cwd,
-      stdio: ["ignore", "inherit", "inherit"],
+      stdio: ["ignore", stdio, stdio],
+    });
+    const stdout: Buffer[] = [];
+    const stderr: Buffer[] = [];
+    child.stdout?.on("data", (chunk: Buffer) => {
+      return stdout.push(chunk);
+    });
+    child.stderr?.on("data", (chunk: Buffer) => {
+      return stderr.push(chunk);
     });
 
     child.once("error", reject);
     child.once("close", (code) => {
+      if (beforeOutput) {
+        beforeOutput();
+        if (stdout.length > 0) {
+          process.stdout.write(Buffer.concat(stdout));
+        }
+        if (stderr.length > 0) {
+          process.stderr.write(Buffer.concat(stderr));
+        }
+      }
       resolveExit(code ?? 1);
     });
   });

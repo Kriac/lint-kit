@@ -34,7 +34,7 @@ export default config();
 export default config();
 `,
   "lint-staged": `export default {
-  "${lintStagedDefaultPattern}": "lint-kit check --fix",
+  "${lintStagedDefaultPattern}": "lint-kit check",
 };
 `,
 };
